@@ -3,7 +3,7 @@ import { fetchItems, fetchItem, insertItem, deleteItem, updateItem, updateItem }
 
 const router = express.Router();
 
-// FETCH ITEMS
+// FETCH ITEMSg
 router.get('/', fetchItems);
 
 // FETCH ITEM BY ID
