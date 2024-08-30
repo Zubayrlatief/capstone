@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import productsRouter from './routes/productsRouter.js'
+import itemsRouter from './routes/itemsRouter.js'
 import usersRouter from './routes/usersRouter.js'
 
 let port = process.env.PORT || 5001
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 app.use(cors())
 
-app.use('/products', productsRouter)
+app.use('/items', itemsRouter)
 app.use('/users', usersRouter)
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

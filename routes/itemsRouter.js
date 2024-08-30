@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchItems, fetchItem, insertItem, deleteItem, updateItem, updateItem } from '../controller/itemsController.js';
+import { fetchItems, fetchItem, insertItem, deleteItem, updateItem, } from '../controller/itemsController.js';
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get('/:id', fetchItem);
 router.post('/items', insertItem);
 
 // FULLY UPDATES A ITEM BY ID
-router.put('/item/:id', updateItem)
+router.put('/items/:id', updateItem)
 
 // DELETE A ITEM BY ID
 router.delete('/delete/:id', deleteItem);
