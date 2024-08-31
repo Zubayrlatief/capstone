@@ -3,9 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>API Endpoints</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    rfr3
+
+    <h2>Home</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>HTTP Methods</th>
+                <th>Path</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>/</td>
+                <td>Home page</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>HTTP Methods</th>
+                <th>Path</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>/users</td>
+                <td>Retrieve all users</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/users/:id</td>
+                <td>Retrieve a specific user by ID</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/users/register</td>
+                <td>Register a new user</td>
+            </tr>
+            <tr>
+                <td>PATCH/PUT</td>
+                <td>/users/update/:id</td>
+                <td>Update user information by ID</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/users/delete/:id</td>
+                <td>Delete a user by ID</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>HTTP Methods</th>
+                <th>Path</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>/products</td>
+                <td>Retrieve all products</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/products/:id</td>
+                <td>Retrieve a specific product by ID</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/products/addProduct</td>
+                <td>Add a new product</td>
+            </tr>
+            <tr>
+                <td>PUT/PATCH</td>
+                <td>/products/update/:id</td>
+                <td>Update product information by ID</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Cart</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>HTTP Methods</th>
+                <th>Path</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>/cart</td>
+                <td>Retrieve all items in the cart</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/cart</td>
+                <td>Add an item to the cart</td>
+            </tr>
+            <tr>
+                <td>PATCH</td>
+                <td>/cart/:prodID</td>
+                <td>Update the quantity of a specific item in the cart</td>
+            </tr>
+            <tr>
+                <td>PUT</td>
+                <td>/cart/:prodID</td>
+                <td>Replace the item in the cart with a specific ID</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/cart/:prodID</td>
+                <td>Remove a specific item from the cart</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/cart</td>
+                <td>Clear all items from the cart</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>

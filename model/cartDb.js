@@ -1,5 +1,7 @@
+// cartDb.js
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
+
 config();
 
 const pool = createPool({
@@ -9,85 +11,98 @@ const pool = createPool({
     password: process.env.PASSWORD
 });
 
-// Get all items
-const getCartsDb = async () => {
+// Get all items in the cart
+const getItemsDb = async () => {
     try {
-        let [data] = await pool.query('SELECT * FROM cart');
+        const [data] = await pool.query('SELECT * FROM cart');
         return data;
     } catch (error) {
-        console.error('Error fetching all carts:', error);
-        throw error; // Propagate error to be handled by caller
+        console.error('Error fetching items from cart:', error);
+        throw new Error('Failed to fetch items from the cart.');
     }
 };
 
-// Get a single item by ID
-const getCartDb = async (cartID) => {
+// Get a single item by product ID
+const getItemDb = async (prodID) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM cart WHERE cartID = ?', [cartID]);
+        const [rows] = await pool.query('SELECT * FROM cart WHERE prodID = ?', [prodID]);
         if (rows.length === 0) {
-            return null; // No item found
+            return null;
         }
-        return rows[0]; // Return the item object
+        return rows[0];
     } catch (error) {
-        console.error('Error fetching cart:', error);
-        throw error; // Propagate error to be handled by caller
+        console.error(`Error fetching item with product ID ${prodID} from cart:`, error);
+        throw new Error('Failed to fetch the item from the cart.');
     }
 };
 
-// Insert a single item
-const insertCartDb = async (userID, prodID, quantity, totalPrice) => {
+// Insert a new item into the cart
+const insertItemDb = async (userID, prodID, quantity, totalPrice) => {
     try {
-        const [result] = await pool.query(`
-            INSERT INTO cart (userID, prodID, quantity, totalPrice)
-            VALUES (?, ?, ?, ?)
-        `, [userID, prodID, quantity, totalPrice]);
-        console.log("Cart item inserted successfully.");
+        const [result] = await pool.query(
+            'INSERT INTO cart (userID, prodID, quantity, totalPrice) VALUES (?, ?, ?, ?)',
+            [userID, prodID, quantity, totalPrice]
+        );
+        console.log('Cart item inserted successfully with ID:', result.insertId);
+        return result.insertId;
     } catch (error) {
-        console.error("Error inserting item into the database:", error);
+        console.error('Error inserting item into cart:', error);
+        throw new Error('Failed to insert item into the cart.');
+    }
+};
+
+// Delete an item from the cart by product ID
+const deleteItemDb = async (prodID) => {
+    try {
+        const [result] = await pool.query(
+            'DELETE FROM cart WHERE prodID = ?',
+            [prodID]
+        );
+
+        if (result.affectedRows === 0) {
+            console.log(`No item found with product ID ${prodID}.`);
+            throw new Error('Item not found in the cart.');
+        }
+
+        console.log(`Item with product ID ${prodID} deleted successfully.`);
+        return result.affectedRows;
+    } catch (error) {
+        console.error(`Error deleting item with product ID ${prodID}:`, error);
+        throw new Error('Failed to delete item from the cart.');
+    }
+};
+
+// Clear all items from the cart
+const clearCartDb = async () => {
+    try {
+        const [result] = await pool.query('DELETE FROM cart');
+        return result.affectedRows; // Return number of affected rows
+    } catch (error) {
+        console.error('Error clearing cart:', error);
         throw error;
     }
 };
 
-// Delete an item by ID
-const deleteCartDb = async (prodID) => {
+// Update an item in the cart
+const updateItemDb = async (quantity, prodID) => {
     try {
-        const [result] = await pool.query(`
-            DELETE FROM cart WHERE prodID = ?
-        `, [prodID]);
-
+        const [result] = await pool.query(
+            'UPDATE cart SET quantity = ? WHERE prodID = ?',
+            [quantity, prodID]
+        );
         if (result.affectedRows === 0) {
-            console.log(`No item found with ID ${prodID}.`);
-            throw new Error('Item not found');
+            console.log(`No item updated for product ID ${prodID}. The item may not exist.`);
+            return { affectedRows: 0 };
         }
 
-        console.log(`Item with ID ${prodID} deleted successfully.`);
+        console.log('Item updated successfully.');
+        return result;
     } catch (error) {
-        console.error(`Error deleting item with ID ${prodID}:`, error);
-        throw new Error('Failed to delete item');
-    }
-};
-
-// Update an item
-const updateCartDb = async (prodName, quantity, amount, description, category, prodUrl, id) => {
-    try {
-        console.log('Updating item with ID:', id);
-        console.log('Values:', { prodName, quantity, amount, description, category, prodUrl });
-
-        const [result] = await pool.query(`
-            UPDATE cart 
-            SET prodName = ?, quantity = ?, amount = ?, description = ?, category = ?, prodUrl = ?
-            WHERE prodID = ?
-        `, [prodName, quantity, amount, description, category, prodUrl, id]);
-
-        console.log('Updated:', result);
-        if (result.affectedRows === 0) {
-            console.log('No rows updated, ID does not exist');
-        }
-    } catch (error) {
-        console.error('Error updating item:', error);
-        throw error;
+        console.error(`Error updating item with product ID ${prodID}:`, error);
+        throw new Error('Failed to update item in the cart.');
     }
 };
 
 // Export functions
-export { getCartsDb, getCartDb, insertCartDb, deleteCartDb, updateCartDb };
+export { getItemsDb, getItemDb, insertItemDb, deleteItemDb, clearCartDb, updateItemDb };
+
