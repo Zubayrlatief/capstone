@@ -1,5 +1,5 @@
 <template>
-    
+   <div>
  <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light d-flex justify-content-center">
   <a class="navbar-brand" href="#"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,14 +21,17 @@
 </nav>
 
 <LandingPage/>
-
+<ItemsPage/>
+</div>
 </template>
 
 <script>
 import LandingPage from './components/LandingPage.vue';
+import ItemsPage from './components/ItemsPage.vue';
   export default{
     components:{
-      LandingPage
+      LandingPage,
+      ItemsPage
     }
   }
 </script>
