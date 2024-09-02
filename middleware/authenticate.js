@@ -1,6 +1,4 @@
-const bcrypt = require('bcrypt');
-import bcrypt from 'bcrypt';
-
+import { compare } from "bcrypt"
 import { loginUserDb } from "../model/usersDb.js"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
