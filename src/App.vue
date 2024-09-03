@@ -19,14 +19,19 @@
     </ul>
   </div>
 </nav>
-
+ <ItemsList/>
 </div>
 <Router-view></Router-view>
 </template>
 
 <script>
-  export default{
-  }
+ import ItemsList from './components/ItemsList.vue'; // Ensure the path matches your folder structure
+
+export default {
+  components: {
+    ItemsList, // Register the ItemList component
+  },
+};
 </script>
 
 <style>
