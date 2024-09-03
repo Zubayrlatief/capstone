@@ -20,19 +20,12 @@
   </div>
 </nav>
 
-<LandingPage/>
-<ItemsPage/>
 </div>
+<Router-view></Router-view>
 </template>
 
 <script>
-import LandingPage from './components/LandingPage.vue';
-import ItemsPage from './components/ItemsPage.vue';
   export default{
-    components:{
-      LandingPage,
-      ItemsPage
-    }
   }
 </script>
 
