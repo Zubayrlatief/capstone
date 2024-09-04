@@ -1,133 +1,56 @@
 <template>
-    <div class="register-container">
-      <h1>Register</h1>
-      <form @submit.prevent="register">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            v-model="formData.username"
-            class="form-control"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            v-model="formData.email"
-            class="form-control"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="formData.password"
-            class="form-control"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            v-model="formData.confirmPassword"
-            class="form-control"
-            required
-          />
-        </div>
-        <div v-if="error" class="error-message">
-          <p>{{ error }}</p>
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-      </form>
+  <div class="register container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <h2 class="text-center">Register</h2>
+        <form @submit.prevent="register">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" v-model="username" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" v-model="email" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" v-model="password" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import { mapActions } from 'vuex';
-  
-  export default {
-    name: 'RegisterPage',
-    data() {
-      return {
-        formData: {
-          username: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        },
-        error: null
-      };
-    },
-    methods: {
-      ...mapActions(['signup']),
-      async register() {
-        this.error = null;
-  
-        if (this.formData.password !== this.formData.confirmPassword) {
-          this.error = "Passwords do not match.";
-          return;
-        }
-  
-        try {
-          await this.signup(this.formData);
-          alert('Registration successful!');
-          this.$router.push('/login'); // Redirect to login page after successful registration
-        } catch (error) {
-          this.error = error.response?.data?.message || "An error occurred during registration.";
-        }
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    async register() {
+      try {
+        await axios.post('http://localhost:3000/users/register', {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+        });
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Registration error:', error);
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .register-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .register-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-    text-align: center;
-  }
-  </style>
-  
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* Additional styles can be added here if needed */
+</style>
