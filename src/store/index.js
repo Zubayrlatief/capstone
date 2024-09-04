@@ -1,67 +1,33 @@
-// store/index.js
-
-import { createStore } from 'vuex';
+import { createStore } from 'vuex'; // Import createStore from vuex
 import axios from 'axios';
 
 const store = createStore({
-  state: {
-    items: [],
-    loading: false,
-    sortBy: 'name',
-    searchQuery: '', // State to hold the search query
+  state() {
+    return {
+      items: [],
+    };
   },
   mutations: {
     SET_ITEMS(state, items) {
       state.items = items;
     },
-    SET_LOADING(state, isLoading) {
-      state.loading = isLoading;
-    },
-    SET_SORT_BY(state, sortBy) {
-      state.sortBy = sortBy;
-    },
-    SET_SEARCH_QUERY(state, query) {
-      state.searchQuery = query;
-    },
-    SORT_ITEMS(state) {
-      if (state.sortBy === 'name') {
-        state.items.sort((a, b) => a.prodName.localeCompare(b.prodName));
-      } else if (state.sortBy === 'price') {
-        state.items.sort((a, b) => a.amount - b.amount);
-      }
-    },
   },
   actions: {
     async fetchItems({ commit }) {
-      commit('SET_LOADING', true);
       try {
+        // Replace with your actual backend URL
         const response = await axios.get('https://capstone-2-p8rd.onrender.com/items');
+        console.log('Fetched items:', response.data);
         commit('SET_ITEMS', response.data);
-        commit('SORT_ITEMS');
       } catch (error) {
-        console.error('Error fetching items:', error);
-      } finally {
-        commit('SET_LOADING', false);
+        console.error('Request error:', error.response ? error.response.data : error.message);
       }
-    },
-    updateSortBy({ commit }, sortBy) {
-      commit('SET_SORT_BY', sortBy);
-      commit('SORT_ITEMS');
-    },
-    updateSearchQuery({ commit }, query) {
-      commit('SET_SEARCH_QUERY', query);
     },
   },
   getters: {
-    filteredItems: (state) => {
-      if (!state.searchQuery) {
-        return state.items;
-      }
-      return state.items.filter(item =>
-        item.prodName.toLowerCase().includes(state.searchQuery.toLowerCase())
-      );
+    allItems(state) {
+      return state.items;
     },
-    isLoading: (state) => state.loading,
   },
 });
 
