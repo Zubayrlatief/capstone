@@ -40,10 +40,10 @@ const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emai
 // Getting user for error message 
 const getUserDbByEmail = async (emailAdd) => {
     try {
-        const result = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
-        return result.length > 0 ? result[0] : null;  // Return user if found, null otherwise
+        const [rows] = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
+        return rows.length > 0 ? rows[0] : null;  // Return user if found, null otherwise
     } catch (error) {
-        console.error("Error fetching user by email:", error);
+        console.error('Error fetching user by email:', error);
         throw error;
     }
 };
