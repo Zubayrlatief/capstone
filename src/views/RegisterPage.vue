@@ -17,14 +17,6 @@
             <input v-model="userAge" type="number" id="userAge" class="form-control" placeholder="Age" required />
           </div>
           <div class="form-group mb-3">
-            <label for="Gender">Gender</label>
-            <input v-model="Gender" type="text" id="Gender" class="form-control" placeholder="Gender" required />
-          </div>
-          <div class="form-group mb-3">
-            <label for="userRole">Role</label>
-            <input v-model="userRole" type="text" id="userRole" class="form-control" placeholder="Role" required />
-          </div>
-          <div class="form-group mb-3">
             <label for="emailAdd">Email Address</label>
             <input v-model="emailAdd" type="email" id="emailAdd" class="form-control" placeholder="Email Address" required />
           </div>
@@ -38,10 +30,16 @@
           </div>
           <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
+
+        <!-- Success/Error Message -->
+        <div v-if="message" class="alert" :class="{'alert-success': isSuccess, 'alert-danger': !isSuccess}" role="alert">
+          {{ message }}
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -51,35 +49,64 @@ export default {
     return {
       firstName: '',
       lastName: '',
-      userAge: null,
-      Gender: '',
-      userRole: 'user',
+      userAge: '',
       emailAdd: '',
       userPass: '',
-      userProfile: 'https://codjoelmayer.github.io/projectImages/images/profile-Image.png'
+      userProfile: 'https://codjoelmayer.github.io/projectImages/images/profile-Image.png',
+      message: '',       // To store success/error messages
+      isSuccess: false   // To track if the registration was successful
     };
   },
   methods: {
     async registerUser() {
       try {
-        const response = await axios.post('https://capstone-2-p8rd.onrender.com/users/register', {
+        await axios.post('https://capstone-2-p8rd.onrender.com/users/register', {
           firstName: this.firstName,
           lastName: this.lastName,
           userAge: this.userAge,
-          Gender: this.Gender,
-          userRole: this.userRole,
           emailAdd: this.emailAdd,
           userPass: this.userPass,
           userProfile: this.userProfile
         });
-        console.log(response.data);
+        
+        // Display success message
+        this.isSuccess = true;
+        this.message = 'Registration successful! Redirecting to login...';
+
+        // Optionally, clear form fields
+        this.clearForm();
+
+        // Redirect to the login page after a short delay (e.g., 2 seconds)
+        setTimeout(() => {
+          this.$router.push('/login'); // Make sure the route is set to your login page
+        }, 2000);
       } catch (error) {
+        // Handle error response from server
+        this.isSuccess = false;
+
+        // Check if error response exists and display the appropriate message
+        if (error.response && error.response.data && error.response.data.message) {
+          this.message = error.response.data.message;
+        } else {
+          this.message = 'Registration failed. Please try again.';
+        }
         console.error(error.response.data);
       }
+    },
+    clearForm() {
+      this.firstName = '';
+      this.lastName = '';
+      this.userAge = '';
+      this.emailAdd = '';
+      this.userPass = '';
+      this.userProfile = '';
     }
   }
 };
 </script>
+
+
+
 
 <style>
 .container {
@@ -88,5 +115,8 @@ export default {
   border-radius: 10px;
   background-color: #f8f9fa;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.alert {
+  margin-top: 20px;
 }
 </style>
