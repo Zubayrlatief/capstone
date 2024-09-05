@@ -18,12 +18,18 @@ const getUserDb = async (id) =>{
     let [[data]] = await pool.query('SELECT * FROM users WHERE userID = ?',[id])
     return data
 }
-const loginUserDb = async (emailAdd) =>{
-    const [[data]] = await pool.query('SELECT * FROM users WHERE emailAdd = ?',[emailAdd])
-    return data
-}    
+// Fetch user by email for login
+const loginUserDb = async (emailAdd) => {
+    try {
+        const result = await pool.query(`SELECT * FROM users WHERE emailAdd = ?`, [emailAdd]);
+        return result[0]; // Assuming MySQL returns an array of results
+    } catch (error) {
+        console.error("Error fetching user from the database:", error);
+        throw error;
+    }
+}; 
 
-// Insert // Register
+// Insert new user into the database during registration
 const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile) => {
     try {
         await pool.query(`
@@ -83,6 +89,8 @@ const updateUserDb = async (userID, { firstName, lastName, userAge, Gender, user
         throw new Error('Failed to update user'); // Optionally, throw an error to be handled by the calling function
     }
 };
+
+
 // console.log(await insertPeer('Matthew','23','purple','gatsby'))
 // console.log(await getUsersDb());
 // console.log(await getPeer(1));

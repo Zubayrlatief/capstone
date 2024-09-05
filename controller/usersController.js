@@ -1,5 +1,9 @@
-import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb } from '../model/usersDb.js'
+import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb  } from '../model/usersDb.js'
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const getUsers = async(req,res)=>{
     res.json(await getUsersDb())
 }
@@ -18,27 +22,25 @@ const getUser = async (req, res) => {
 };
 
 
-//insert//add
+// Register a new user
 const insertUser = async (req, res) => {
     try {
-        const {
-            firstName, lastName, userAge, Gender,
-            userRole, emailAdd, userPass, userProfile
-        } = req.body;
+        const { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile } = req.body;
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(userPass, 10);
 
         // Insert the user into the database
-        await insertUserDb( firstName, lastName, userAge, Gender, userRole, emailAdd, hashedPassword, userProfile);
+        await insertUserDb(firstName, lastName, userAge, Gender, userRole, emailAdd, hashedPassword, userProfile);
 
         // Send success response
-        res.status(200).send('Data was inserted successfully');
+        res.status(200).send('User registered successfully');
     } catch (error) {
         // Handle errors
-        res.status(500).send('An error occurred while inserting data');
+        res.status(500).send('An error occurred while registering the user');
     }
 };
+
 
 //delete
 const deleteUser = async(req,res)=>{
@@ -87,8 +89,20 @@ const updateUser = async (req, res) => {
     }
 };
 
-const loginUser = async(req,res)=>{
-    res.json({message:"login successful", token:req.body.token})
+
+// Login user
+const loginUser = async (req, res) => {
+    try {
+        const { emailAdd } = req.body;
+        
+        // Generate JWT token (set expiration to 1 hour)
+        const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
+
+        // Send the token to the client
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).send('An error occurred during login');
+    }
 };
 
 export {getUsers, getUser, insertUser, deleteUser, updateUser, loginUser}
