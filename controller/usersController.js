@@ -1,4 +1,4 @@
-import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb,  getUserDbByEmail, insertUserDb } from '../model/usersDb.js'
+import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb,  getUserDbByEmail, } from '../model/usersDb.js'
 import bcrypt from 'bcrypt';
 const getUsers = async(req,res)=>{
     res.json(await getUsersDb())
@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
 //insert//add
 const insertUser = async (req, res) => {
     try {
-        const { firstName, lastName, userAge, emailAdd, userPass, userProfile } = req.body;
+        const { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile } = req.body;
 
         // Check if the user already exists
         const userExists = await getUserDbByEmail(emailAdd);
@@ -34,7 +34,7 @@ const insertUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(userPass, 10);
 
         // Insert the user into the database
-        await insertUserDb(firstName, lastName, userAge, emailAdd, hashedPassword, userProfile);
+        await insertUserDb(firstName, lastName, userAge, Gender, userRole, emailAdd, hashedPassword, userProfile);
 
         // Send success response
         res.status(200).json({ message: 'Registration successful' });
