@@ -33,9 +33,10 @@ const checkUser = async(req,res,next)=>{
             }
         });
     } catch (err) {
-        console.log("Error in checkUser middleware", error);
+        console.log("Error in checkUser middleware:", err); // Corrected variable name
         res.status(500).send('Internal Server Error');
     }
+    
     };
     
     // let hashedPassword = (await loginUserDb(emailAdd)).userPass
