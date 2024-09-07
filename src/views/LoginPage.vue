@@ -25,23 +25,34 @@
   export default {
     data() {
       return {
-        email: '',
-        password: '',
+        emailAdd: '',
+        userPass: '',
       };
     },
     methods: {
-      async login() {
-        try {
-          await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
-            email: this.email,
-            password: this.password,
-          });
-          this.$router.push('/account');
-        } catch (error) {
-          console.error('Login error:', error);
-        }
-      },
-    },
+  async login() {
+    try {
+      const response = await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
+        emailAdd: this.email,  // Update field names as required
+        userPass: this.password,
+      });
+      this.$router.push('/account');
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status code other than 2xx
+        console.error('Login error:', error.response.data.message || error.response.data || error.response.statusText);
+        alert(`Login failed: ${error.response.data.message || 'Unknown error'}`);
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error('No response received:', error.request);
+      } else {
+        // Something else caused the error
+        console.error('Error during login:', error.message);
+      }
+    }
+  },
+},
+
   };
   </script>
   
