@@ -32,7 +32,7 @@
     methods: {
       async login() {
         try {
-          await axios.post('http://localhost:3000/users/login', {
+          await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
             email: this.email,
             password: this.password,
           });
