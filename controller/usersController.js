@@ -92,8 +92,10 @@ const updateUser = async (req, res) => {
     }
 };
 
-const loginUser = async(req,res)=>{
-    res.json({message:"login successful", token:req.body.token})
+const loginUser = (req, res) => {
+    const { token } = req.body;
+    res.status(200).json({ message: "Login successful", token });
 };
+
 
 export {getUsers, getUser, insertUser, deleteUser, updateUser, loginUser}

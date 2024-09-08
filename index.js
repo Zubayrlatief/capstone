@@ -4,7 +4,7 @@ import itemsRouter from './routes/itemsRouter.js'
 import usersRouter from './routes/usersRouter.js'
 import cartRouter from './routes/cartRouter.js'
 
-let port = process.env.PORT || 5002
+let port = process.env.PORT || 5001;
 const app = express()
 
 app.use(express.static('public'))
