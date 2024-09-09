@@ -6,8 +6,14 @@ import LoginPage from '@/views/LoginPage.vue';
 import AccountPage from '@/views/AccountPage.vue';
 import EditAccount from '@/views/EditAccount.vue';
 import AdminPage from '@/views/AdminPage.vue'; // Import the AdminPage component
+import PhilosophyPage from '@/views/PhilosophyPage.vue';
 
 const routes = [
+  {
+    path: '/philosophy',
+    name: 'Philosophy', 
+    component: PhilosophyPage
+  },
   {
     path: '/items',
     name: 'ItemsList',

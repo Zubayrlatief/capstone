@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
   <div class="items-list">
     <h1>Item List</h1>
     
@@ -43,12 +44,14 @@
 import { mapGetters, mapActions } from 'vuex';
 import ItemCard from '../components/ItemCard.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
+import NavBar from '@/components/NavBar.vue';
 
 export default {
   name: 'ItemsList',
   components: {
     ItemCard,
-    LoadingSpinner
+    LoadingSpinner,
+    NavBar
   },
   data() {
     return {
