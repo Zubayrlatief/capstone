@@ -4,9 +4,8 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-
-const checkUser = async(req,res,next)=>{
-    const {emailAdd,userPass} = req.body
+const checkUser = async (req, res, next) => {
+    const { emailAdd, userPass } = req.body;
     console.log("Email:", emailAdd, "Password:", userPass);
 
     try {
@@ -17,28 +16,26 @@ const checkUser = async(req,res,next)=>{
 
         const hashedPassword = user.userPass;
         console.log("Hashed Password:", hashedPassword);
+
+        const isMatch = await compare(userPass, hashedPassword);
         
-        compare(userPass, hashedPassword, (err, result) => {
-            if (err) {
-                console.log("Error comparing passwords");
-            }
-        
-            if (result) {
-                const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: "1h" });
-                console.log("Token:", token);
-                req.body.token = token;
-                next();
-            } else {
-                res.status(401).send('Incorrect password');
-            }
-        });
+        if (isMatch) {
+            const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: "1h" });
+            console.log("Token:", token);
+            req.body.token = token;
+            next();
+        } else {
+            res.status(401).send('Incorrect password');
+        }
     } catch (err) {
-        console.log("Error in checkUser middleware:", err); // Corrected variable name
+        console.log("Error in checkUser middleware:", err);
         res.status(500).send('Internal Server Error');
     }
-    
-    };
-    
+};
+
+export { checkUser };
+
+
     // let hashedPassword = (await loginUserDb(emailAdd)).userPass
     // let hashedPassword = (await loginUserDb(emailAdd))
 
@@ -59,4 +56,3 @@ const checkUser = async(req,res,next)=>{
 //     }
 //     })
 // }
-export {checkUser}

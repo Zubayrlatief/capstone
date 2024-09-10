@@ -19,15 +19,18 @@ const getUserDb = async (id) =>{
     return data
 }
 // Fetch user by email for login
+// Fetch user by email for login
 const loginUserDb = async (emailAdd) => {
     try {
-        const result = await pool.query(`SELECT * FROM users WHERE emailAdd = ?`, [emailAdd]);
-        return result[0]; // Assuming MySQL returns an array of results
+        const [rows] = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
+        if (rows.length === 0) return null;  // No user found
+        return rows[0]; // Return the first matching user
     } catch (error) {
         console.error("Error fetching user from the database:", error);
         throw error;
     }
-}; 
+};
+
 
 // Insert new user into the database during registration
 const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile) => {
