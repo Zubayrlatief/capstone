@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb,  getUserDbByEmail, } from '../model/usersDb.js'
-=======
-import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb  } from '../model/usersDb.js'
->>>>>>> af711ead917f67ae51bd55f1fb1b0e78bfe96042
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -30,7 +26,6 @@ const getUser = async (req, res) => {
 const insertUser = async (req, res) => {
     try {
         const { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile } = req.body;
-<<<<<<< HEAD
 
         // Check if the user already exists
         const userExists = await getUserDbByEmail(emailAdd);
@@ -38,8 +33,6 @@ const insertUser = async (req, res) => {
             console.log("Email already exists error triggered");
             return res.status(400).json({ message: 'Email already exists' });
         }
-=======
->>>>>>> af711ead917f67ae51bd55f1fb1b0e78bfe96042
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(userPass, 10);
@@ -48,18 +41,11 @@ const insertUser = async (req, res) => {
         await insertUserDb(firstName, lastName, userAge, Gender, userRole, emailAdd, hashedPassword, userProfile);
 
         // Send success response
-<<<<<<< HEAD
         res.status(200).json({ message: 'Registration successful' });
     } catch (error) {
         console.error('Error registering user:', error.message);
         // Send error response with detailed message
         res.status(500).json({ message: 'An error occurred while registering the user', error: error.message });
-=======
-        res.status(200).send('User registered successfully');
-    } catch (error) {
-        // Handle errors
-        res.status(500).send('An error occurred while registering the user');
->>>>>>> af711ead917f67ae51bd55f1fb1b0e78bfe96042
     }
 };
 
@@ -111,11 +97,6 @@ const updateUser = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
-const loginUser = (req, res) => {
-    const { token } = req.body;
-    res.status(200).json({ message: "Login successful", token });
-=======
 
 // Login user
 const loginUser = async (req, res) => {
@@ -130,7 +111,6 @@ const loginUser = async (req, res) => {
     } catch (error) {
         res.status(500).send('An error occurred during login');
     }
->>>>>>> af711ead917f67ae51bd55f1fb1b0e78bfe96042
 };
 
 
