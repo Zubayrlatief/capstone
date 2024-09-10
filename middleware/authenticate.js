@@ -1,7 +1,9 @@
+// authenticate.js
 import { compare } from "bcrypt";
 import { loginUserDb } from "../model/usersDb.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const checkUser = async (req, res, next) => {
@@ -20,7 +22,7 @@ const checkUser = async (req, res, next) => {
         const isMatch = await compare(userPass, hashedPassword);
         
         if (isMatch) {
-            const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: "1h" });
+            const token = jwt.sign({ id: user.id, emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: "1h" });
             console.log("Token:", token);
             req.body.token = token;
             next();
@@ -34,7 +36,6 @@ const checkUser = async (req, res, next) => {
 };
 
 export { checkUser };
-
 
     // let hashedPassword = (await loginUserDb(emailAdd)).userPass
     // let hashedPassword = (await loginUserDb(emailAdd))
