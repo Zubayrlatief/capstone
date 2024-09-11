@@ -14,16 +14,10 @@ const getUsersDb = async ()=>{
     let [data] = await pool.query('SELECT * FROM users')
     return data
 }
-const getUserDb = async (id) => {
-    try {
-      const [[data]] = await pool.query('SELECT * FROM users WHERE userID = ?', [id]);
-      return data; // data will be undefined if no user is found
-    } catch (error) {
-      console.error('Error fetching user:', error.message);
-      throw error; // rethrow the error to be handled in the controller
-    }
-  };
-  
+const getUserDb = async (id) =>{
+    let [[data]] = await pool.query('SELECT * FROM users WHERE userID = ?',[id])
+    return data
+}
 // Fetch user by email for login
 // Fetch user by email for login
 const loginUserDb = async (emailAdd) => {

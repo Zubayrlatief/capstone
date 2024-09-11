@@ -1,4 +1,4 @@
-import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb, } from '../model/usersDb.js'
+import { getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb,  getUserDbByEmail, } from '../model/usersDb.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -11,16 +11,13 @@ const getUsers = async(req,res)=>{
 //fetch//get
 const getUser = async (req, res) => {
     try {
-      const user = await getUserDb(req.params.id);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      res.status(200).json(user);
+        const user = await getUsersDb(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
     } catch (error) {
-      res.status(500).json({
-        message: 'An error occurred while fetching the user',
-        error: error.message,
-      });
+        res.status(500).json({ message: 'An error occurred while fetching the user', error: error.message });
     }
 };
 
@@ -104,31 +101,14 @@ const updateUser = async (req, res) => {
 // Login user
 const loginUser = async (req, res) => {
     try {
-        const { emailAdd, password } = req.body;
-
-        // Fetch user by email from the database
-        const user = await loginUserDb(emailAdd);
-
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
-
-        // Verify the password
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
-
+        const { emailAdd } = req.body;
+        
         // Generate JWT token (set expiration to 1 hour)
-        const token = jwt.sign({ id: user.id, emailAdd: user.emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
-        // Set the token in a cookie
-        res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-
-        // Send success response
-        res.status(200).json({ message: 'Login successful' });
+        // Send the token to the client
+        res.status(200).json({ token });
     } catch (error) {
-        console.error('An error occurred during login:', error);
         res.status(500).send('An error occurred during login');
     }
 };
