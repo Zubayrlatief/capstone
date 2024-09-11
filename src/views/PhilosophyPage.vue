@@ -8,8 +8,9 @@
 import NavBar from '@/components/NavBar.vue';
 
 export default {
-    name: 'PhilosophyPage',
-    components: NavBar
+    components: {
+    NavBar,
+  },
 }
 </script>
 <style scoped>

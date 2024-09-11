@@ -13,14 +13,17 @@
       alt=""
     />
   </div>
+  <FooterComp/>
 </template>
 
 <script>
+import FooterComp from '@/components/FooterComp.vue';
 import NavBar from '@/components/NavBar.vue';
 export default {
   name: 'LandingPage',
   components: {
-    NavBar
+    NavBar,
+    FooterComp
   },
 }
 </script>

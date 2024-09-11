@@ -7,6 +7,7 @@ import AccountPage from '@/views/AccountPage.vue';
 import EditAccount from '@/views/EditAccount.vue';
 import AdminPage from '@/views/AdminPage.vue'; // Import the AdminPage component
 import PhilosophyPage from '@/views/PhilosophyPage.vue';
+import ContactPage from '@/views/ContactPage.vue';
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     component: AdminPage,
     meta: { requiresAuth: true, isAdmin: true }, // Add meta field for route guards
   },
+  {
+    path: '/contact',
+    name:  'ContactPage',
+    component: ContactPage,
+  }
 ];
 
 const router = createRouter({

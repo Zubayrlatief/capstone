@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
   <div class="container mt-5">
     <h2 class="text-center">Register</h2>
     <form @submit.prevent="registerUser" class="needs-validation" novalidate>
@@ -68,9 +69,13 @@
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue';
 import axios from 'axios';
 
 export default {
+  components: {
+    NavBar,
+  },
   data() {
     return {
       firstName: '',
