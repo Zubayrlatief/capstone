@@ -3,9 +3,12 @@ import cors from 'cors';
 import itemsRouter from './routes/itemsRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import cartRouter from './routes/cartRouter.js';
+import contactRouter from './routes/contactRouter.js';
 
 const app = express();
 const port = process.env.PORT || 5001;
+
+app.use(express.urlencoded({ extended: true }));
 
 // Use CORS middleware with options
 app.use(cors({
@@ -21,6 +24,7 @@ app.use(express.json());
 app.use('/items', itemsRouter);
 app.use('/users', usersRouter);
 app.use('/cart', cartRouter);
+app.use('/contact', contactRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
