@@ -15,9 +15,13 @@ export const fetchCart = async (req, res) => {
 // Add an item to the cart
 export const addToCart = async (req, res) => {
     const { userID, prodID, quantity, totalPrice } = req.body;
+    
+    console.log('Request body:', req.body); // Log the request body to see what is being received
+
     if (!userID || !prodID || !quantity || !totalPrice) {
         return res.status(400).json({ error: 'All fields are required' });
     }
+
     try {
         const insertedId = await insertItemDb(userID, prodID, quantity, totalPrice);
         res.status(201).json({ message: 'Item added to cart successfully', id: insertedId });
@@ -26,6 +30,7 @@ export const addToCart = async (req, res) => {
         res.status(500).json({ error: 'Failed to add item to cart' });
     }
 };
+
 
 // Update an item in the cart
 export const updateCartItem = async (req, res) => {

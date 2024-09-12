@@ -1,6 +1,6 @@
-import express from 'express';
-import { getUsers, getUser, insertUser, deleteUser, updateUser, loginUser,  getUserByEmail, deleteUserByEmail } from '../controller/usersController.js';
-import { checkUser } from '../middleware/authenticate.js'
+import express, { Router } from 'express';
+import { getUsers, getUser, insertUser, deleteUser, updateUser, loginUser,  getUserByEmail, deleteUserByEmail, getCurrentUser } from '../controller/usersController.js';
+import { checkUser, authenticateJWT } from '../middleware/authenticate.js'
 
 const router = express.Router();
 
@@ -27,5 +27,8 @@ router.delete('/delete/:id', deleteUser);
 
 // DELETE USER BY EMAIL
 router.delete('/users/email/:email', deleteUserByEmail);
+
+// AUTHENTICATES TO GET USER
+router.get('/users/me', authenticateJWT, getCurrentUser)
 
 export default router;

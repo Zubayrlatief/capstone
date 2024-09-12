@@ -137,5 +137,17 @@ export const deleteUserByEmail = async (req, res) => {
     }
 };
 
+const getCurrentUser = async (req, res) => {
+    try {
+        const user = await getUserDb(req.user.id); // req.user.id should be set by middleware
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while fetching the user', error: error.message });
+    }
+};
 
-export {getUsers, getUser, insertUser, deleteUser, updateUser, loginUser}
+
+export {getUsers, getUser, insertUser, deleteUser, updateUser, loginUser, getCurrentUser}
