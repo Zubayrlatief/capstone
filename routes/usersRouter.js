@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUsers, getUser, insertUser, deleteUser, updateUser, loginUser } from '../controller/usersController.js';
+import { getUsers, getUser, insertUser, deleteUser, updateUser, loginUser,  getUserByEmail, deleteUserByEmail } from '../controller/usersController.js';
 import { checkUser } from '../middleware/authenticate.js'
 
 const router = express.Router();
@@ -9,6 +9,9 @@ router.get('/', getUsers);
 
 // FETCH USER BY ID
 router.get('/users/:id', getUser);
+
+// FETCH USER BY EMAIL
+router.get('/users/email/:email', getUserByEmail);
 
 // LOGIN FOR USER
 router.post('/login', checkUser, loginUser);
@@ -22,5 +25,7 @@ router.patch('/update/:id', updateUser);
 // DELETE USER BY ID 
 router.delete('/delete/:id', deleteUser);
 
+// DELETE USER BY EMAIL
+router.delete('/users/email/:email', deleteUserByEmail);
 
 export default router;

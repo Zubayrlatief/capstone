@@ -101,15 +101,39 @@ const updateUser = async (req, res) => {
 // Login user
 const loginUser = async (req, res) => {
     try {
-        const { emailAdd } = req.body;
-        
-        // Generate JWT token (set expiration to 1 hour)
-        const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
-        // Send the token to the client
-        res.status(200).json({ token });
+        // The token should already be generated in the `checkUser` middleware
+        // This endpoint might be used to fetch user details or other functionalities if needed
+        res.status(200).send('Login successful');
     } catch (error) {
         res.status(500).send('An error occurred during login');
+    }
+};
+
+// Fetch user by email
+export const getUserByEmail = async (req, res) => {
+    try {
+        const email = decodeURIComponent(req.params.email);
+        const user = await getUserDbByEmail(email); // Implement this function in your DB logic
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while fetching the user', error: error.message });
+    }
+};
+
+// Delete user by email
+export const deleteUserByEmail = async (req, res) => {
+    try {
+        const email = decodeURIComponent(req.params.email);
+        const result = await deleteUserDbByEmail(email); // Implement this function in your DB logic
+        if (!result) {
+            return res.status(404).json({ message: 'User not found or not deleted' });
+        }
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while deleting the user', error: error.message });
     }
 };
 

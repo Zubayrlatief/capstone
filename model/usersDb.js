@@ -50,7 +50,7 @@ const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emai
 const getUserDbByEmail = async (emailAdd) => {
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
-        return rows.length > 0 ? rows[0] : null;  // Return user if found, null otherwise
+        return rows.length > 0 ? rows[0] : null; // Return user if found, null otherwise
     } catch (error) {
         console.error('Error fetching user by email:', error);
         throw error;
@@ -106,7 +106,22 @@ const updateUserDb = async (userID, { firstName, lastName, userAge, Gender, user
 };
 
 
+
+const deleteUserDbByEmail = async (emailAdd) => {
+    try {
+        const result = await pool.query('DELETE FROM users WHERE emailAdd = ?', [emailAdd]);
+        if (result.affectedRows === 0) {
+            console.log(`No user found with email ${emailAdd}.`);
+            throw new Error('User not found'); // Optionally, throw an error to indicate no user was found
+        }
+        console.log(`User with email ${emailAdd} deleted successfully.`);
+    } catch (error) {
+        console.error(`Error deleting user with email ${emailAdd}:`, error);
+        throw new Error('Failed to delete user'); // Optionally, throw an error to be caught by the calling function
+    }
+};
+
 // console.log(await insertPeer('Matthew','23','purple','gatsby'))
 // console.log(await getUsersDb());
 // console.log(await getPeer(1));
-export {getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb, getUserDbByEmail}
+export {getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb, getUserDbByEmail, deleteUserDbByEmail}
