@@ -1,68 +1,51 @@
 <template>
-    <div class="item-card">
-      <img :src="item.prodURL" alt="Item Image" class="item-image">
-      <div class="item-info">
-        <h2 class="item-name">{{ item.prodName }}</h2>
-        <p class="item-description">{{ item.description }}</p>
-        <p class="item-price">Price: ${{ item.amount }}</p>
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'ItemCard',
-    props: {
-      item: {
-        type: Object,
-        required: true
-      }
+  <div class="item-card">
+    <!-- Display item details -->
+    <img :src="item.prodURL" alt="Item Image" />
+    <h2>{{ item.prodName }}</h2>
+    <p>{{ formatAmount(item.amount) }}</p>
+    <button @click="addToCart(item)">Add to Cart</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ItemCard',
+  props: {
+    item: {
+      type: Object,
+      required: true
     }
-  };
-  </script>
-  
-  <style scoped>
-  .item-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 16px;
-    max-width: 300px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  },
+  methods: {
+    formatAmount(amount) {
+      if (typeof amount === 'number') {
+        return amount.toFixed(2); // Format amount to 2 decimal places
+      } else if (typeof amount === 'string') {
+        return Number(amount).toFixed(2); // Convert string to number and format
+      }
+      return 'N/A'; // Default value if amount is neither number nor string
+    },
+    addToCart(item) {
+      this.$emit('add-to-cart', item);
+    }
   }
-  
-  .item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .item-image {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .item-info {
-    margin-top: 12px;
-  }
-  
-  .item-name {
-    font-size: 1.2em;
-    margin: 0;
-    color: #333;
-  }
-  
-  .item-description {
-    font-size: 1em;
-    margin: 8px 0;
-    color: #666;
-  }
-  
-  .item-price {
-    font-size: 1.1em;
-    color: #333;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+/* Styles for ItemCard component */
+.item-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+.item-card img {
+  max-width: 100%;
+  height: auto;
+}
+.item-card button {
+  margin-top: 10px;
+}
+</style>

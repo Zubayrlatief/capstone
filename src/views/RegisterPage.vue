@@ -24,7 +24,7 @@
       <div class="form-group mb-3">
         <label for="gender">Gender</label>
         <select v-model="Gender" id="gender" class="form-control" required>
-          <option value="" disabled selected>Select your gender</option>
+          <option value="" disabled>Select your gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
@@ -35,7 +35,7 @@
       <div class="form-group mb-3">
         <label for="userRole">Role</label>
         <select v-model="userRole" id="userRole" class="form-control" required>
-          <option value="" disabled selected>Select your role</option>
+          <option value="" disabled>Select your role</option>
           <option value="User">User</option>
           <option value="Admin">Admin</option>
         </select>

@@ -4,10 +4,11 @@ import LandingPage from '@/views/LandingPage.vue';
 import RegisterPage from '@/views/RegisterPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import AccountPage from '@/views/AccountPage.vue';
-import EditAccount from '@/views/EditAccount.vue';
 import AdminPage from '@/views/AdminPage.vue'; // Import the AdminPage component
 import PhilosophyPage from '@/views/PhilosophyPage.vue';
 import ContactPage from '@/views/ContactPage.vue';
+import CartPage from '@/views/CartPage.vue';
+import CheckoutPage from '@/views/CheckoutPage.vue';
 
 const routes = [
   {
@@ -40,16 +41,23 @@ const routes = [
     name: 'AccountPage',
     component: AccountPage,
   },
-  {
-    path: '/account/edit/:id',
-    name: 'Edit',
-    component: EditAccount,
-  },
+
   {
     path: '/admin', // Add a route for the admin page
     name: 'AdminPage',
     component: AdminPage,
     meta: { requiresAuth: true, isAdmin: true }, // Add meta field for route guards
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: CartPage,
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: CheckoutPage,
+    meta: { requiresAuth: true },
   },
   {
     path: '/contact',

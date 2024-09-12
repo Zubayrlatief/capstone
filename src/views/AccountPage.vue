@@ -1,21 +1,65 @@
 <template>
-  <NavBar />
-  <div class="account container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <h2 class="text-center">My Account</h2>
-        <div v-if="user" class="card p-4">
-          <p><strong>Username:</strong> {{ user.username }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <!-- Add other fields as needed -->
-          <div class="d-flex justify-content-between">
-            <button @click="editAccount" class="btn btn-warning">Edit Account</button>
-            <button @click="deleteAccount" class="btn btn-danger">Delete Account</button>
+  <div class="account-page container mt-5">
+    <NavBar />
+    <h2 class="text-center">Account Details</h2>
+    
+    <div v-if="loading" class="text-center">
+      <LoadingSpinner />
+    </div>
+
+    <div v-else>
+      <div v-if="!isEditing">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Account Information</h5>
+            <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+            <p><strong>Email:</strong> {{ user.emailAdd }}</p>
+            <p><strong>Age:</strong> {{ user.userAge }}</p>
+            <p><strong>Gender:</strong> {{ user.Gender }}</p>
+            <p><strong>Role:</strong> {{ user.userRole }}</p> <!-- Display user role -->
+            <p><strong>Profile URL:</strong> <a :href="user.userProfile" target="_blank">{{ user.userProfile }}</a></p>
+            <button class="btn btn-primary" @click="isEditing = true">Edit</button>
+            <button class="btn btn-danger" @click="deleteAccount">Delete Account</button>
           </div>
         </div>
-        <div v-else>
-          <p class="text-center">Loading account details...</p>
-        </div>
+
+        <router-link to="/cart" class="btn btn-secondary">View Cart</router-link>
+      </div>
+      
+      <div v-else>
+        <h2 class="text-center">Edit Account</h2>
+        <form @submit.prevent="updateAccount">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" v-model="user.firstName" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" v-model="user.lastName" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" v-model="user.emailAdd" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" v-model="user.userAge" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <input type="text" v-model="user.Gender" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <input type="text" v-model="user.userRole" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="profileUrl" class="form-label">Profile URL</label>
+            <input type="text" v-model="user.userProfile" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+          <button type="button" class="btn btn-secondary w-100 mt-2" @click="isEditing = false">Cancel</button>
+        </form>
       </div>
     </div>
   </div>
@@ -23,91 +67,92 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import jwt_decode from 'jwt-decode';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 
 export default {
   components: {
     NavBar,
+    LoadingSpinner
   },
   data() {
     return {
-      user: null,
+      user: {},
+      loading: true,
+      isEditing: false,
     };
   },
-  created() {
-    this.fetchUser();
-  },
   methods: {
-    async fetchUser() {
+    async fetchUserData() {
       try {
-        const cookieString = document.cookie;
-        console.log('Cookies:', cookieString); // Debugging line
-
-        if (!cookieString) {
-          console.error('No cookies found, please log in again.');
-          this.$router.push('/login');
-          return;
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No token found');
         }
 
-        const tokenCookie = cookieString.split('; ').find(row => row.startsWith('token='));
-        if (!tokenCookie) {
-          console.error('Token not found in cookies, please log in again.');
-          this.$router.push('/login');
-          return;
+        const decoded = jwt_decode(token);
+        if (!decoded.emailAdd) {
+          throw new Error('Decoded token does not contain emailAdd');
         }
 
-        const token = tokenCookie.split('=')[1];
-        if (token) {
-          const decodedToken = jwtDecode(token);
-          const userId = decodedToken.id;
+        const encodedEmail = encodeURIComponent(decoded.emailAdd);
 
-          const response = await axios.get(`https://capstone-2-p8rd.onrender.com/users/users/${userId}`, {
-            withCredentials: true, // Ensure cookies are included
-          });
+        const response = await axios.get(`https://capstone-2-p8rd.onrender.com/users/email/${encodedEmail}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-          this.user = response.data;
-        } else {
-          console.error('Token is invalid, please log in again.');
-          this.$router.push('/login');
-        }
+        this.user = response.data;
       } catch (error) {
-        console.error('Error fetching user:', error);
-        this.$router.push('/login');
+        console.error('Error fetching user data:', error);
+      } finally {
+        this.loading = false;
       }
     },
-    async editAccount() {
+
+    async updateAccount() {
       try {
-        await axios.patch(`https://capstone-2-p8rd.onrender.com/users/update/${this.user.id}`, {
-          // Pass updated user data here
-        }, {
-          withCredentials: true, // Ensure cookies are included
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No token found');
+        }
+        await axios.patch(`https://capstone-2-p8rd.onrender.com/users/${this.user.userID}`, this.user, {
+          headers: { Authorization: `Bearer ${token}` }
         });
-        // Handle successful update
+        this.isEditing = false;
       } catch (error) {
         console.error('Error updating account:', error);
       }
     },
+
     async deleteAccount() {
       try {
-        await axios.delete(`https://capstone-2-p8rd.onrender.com/users/delete/${this.user.id}`, {
-          withCredentials: true, // Ensure cookies are included
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No token found');
+        }
+        const decoded = jwt_decode(token);
+        await axios.delete(`https://capstone-2-p8rd.onrender.com/users/email/${encodeURIComponent(decoded.emailAdd)}`, {
+          headers: { Authorization: `Bearer ${token}` }
         });
-        this.$router.push('/');
+        localStorage.removeItem('token');
+        this.$router.push('/login');
       } catch (error) {
         console.error('Error deleting account:', error);
       }
-    },
+    }
   },
+  created() {
+    this.fetchUserData();
+  }
 };
 </script>
 
 <style scoped>
-.account {
-  margin-top: 2rem;
+.container {
+  max-width: 800px;
 }
-
 .card {
-  padding: 1rem;
+  padding: 20px;
 }
 </style>

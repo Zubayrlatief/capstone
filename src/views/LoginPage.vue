@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-4">
         <h2 class="text-center">Login</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="loginUser">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input
@@ -24,9 +24,10 @@
               required
             />
           </div>
-          <button type="submit" class="btn btn-primary w-100">
-            Login
-          </button>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <div v-if="message" class="alert mt-3" :class="{'alert-success': success, 'alert-danger': !success}">
+            {{ message }}
+          </div>
         </form>
       </div>
     </div>
@@ -41,38 +42,29 @@ export default {
     return {
       email: '',
       password: '',
+      message: '',
+      success: false,
     };
   },
   methods: {
-    async login() {
+    async loginUser() {
       try {
-        console.log('Attempting to log in with:', {
+        // Adjusted API endpoint and request body to match backend expectations
+        const response = await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
           emailAdd: this.email,
           userPass: this.password,
         });
-
-        const response = await axios.post(
-          'https://capstone-2-p8rd.onrender.com/users/login',
-          {
-            emailAdd: this.email,
-            userPass: this.password,
-          }
-        );
-
-        console.log('Login successful:', response.data);
-        this.$router.push('/account');
+        
+        const token = response.data.token;
+        localStorage.setItem('token', token); // Store token in localStorage or cookies
+        
+        // Handle login success
+        this.message = 'Login successful!';
+        this.success = true;
+        this.$router.push('/items'); // Redirect to the account page
       } catch (error) {
-        if (error.response) {
-          console.error(
-            'Login error:',
-            error.response.data.message || error.response.data
-          );
-          alert(`Login failed: ${error.response.data.message || 'Unknown error'}`);
-        } else if (error.request) {
-          console.error('No response received:', error.request);
-        } else {
-          console.error('Error during login:', error.message);
-        }
+        this.message = 'Login failed: ' + (error.response?.data || error.message);
+        this.success = false;
       }
     },
   },
@@ -80,5 +72,7 @@ export default {
 </script>
 
 <style scoped>
-/* Additional styles can be added here if needed */
+.container {
+  max-width: 500px;
+}
 </style>

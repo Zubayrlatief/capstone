@@ -1,8 +1,8 @@
 <template>
-  <NavBar/>
   <div class="items-list">
+    <NavBar />
     <h1>Item List</h1>
-    
+
     <!-- Sorting Dropdown -->
     <div class="sorting-container">
       <label for="sortOrder">Sort by Price: </label>
@@ -11,7 +11,7 @@
         <option value="desc">High to Low</option>
       </select>
     </div>
-    
+
     <!-- Search Input -->
     <div class="search-container">
       <input
@@ -21,7 +21,7 @@
         @input="filterItems"
       />
     </div>
-    
+
     <!-- Loading Spinner -->
     <div v-if="loading" class="loading-container">
       <LoadingSpinner />
@@ -29,7 +29,12 @@
 
     <!-- Items Grid -->
     <div v-if="!loading && filteredItems.length" class="items-grid">
-      <ItemCard v-for="item in filteredItems" :key="item.itemID" :item="item" />
+      <ItemCard
+        v-for="item in filteredItems"
+        :key="item.itemID"
+        :item="item"
+        @add-to-cart="handleAddToCart"
+      />
     </div>
 
     <div v-else-if="!loading">
@@ -37,8 +42,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
@@ -74,6 +77,7 @@ export default {
         } else if (this.sortOrder === 'desc') {
           return b.amount - a.amount;
         }
+        return 0;
       });
     },
     items() {
@@ -81,7 +85,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchItems']),
+    ...mapActions(['fetchItems', 'addToCart']),
     async loadItems() {
       try {
         await this.fetchItems();
@@ -92,10 +96,13 @@ export default {
       }
     },
     sortItems() {
-      // The sorting is handled reactively by computed property `sortedItems`
+      // Sorting is handled reactively by computed property sortedItems
     },
     filterItems() {
-      // The filtering is handled reactively by computed property `filteredItems`
+      // Filtering is handled reactively by computed property filteredItems
+    },
+    handleAddToCart(item) {
+      this.$store.dispatch('addToCart', item); // Add item to cart via Vuex store
     }
   },
   created() {
@@ -103,7 +110,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .items-list {
