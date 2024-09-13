@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use('/items', itemsRouter);
 app.use('/users', usersRouter);
-app.use('/api/cart', cartRouter);
+app.use('/api', cartRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
