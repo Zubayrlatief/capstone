@@ -1,53 +1,61 @@
 <template>
-    <NavBar/>
-    <div class="item-detail">
-      <h1>Item Detail</h1>
-  
-      <!-- Check if itemDetail exists -->
-      <div v-if="itemDetail">
-        <!-- Use ItemCard to display the detailed view of the item -->
-        <ItemCard :item="itemDetail" />
-      </div>
-  
-      <div v-else>
-        <p>Loading item details...</p>
-      </div>
+    <div v-if="item" class="item-detail">
+      <h1>{{ item.prodName }}</h1>
+      <img :src="item.prodURL" alt="Product Image" />
+      <p>{{ item.description }}</p>
+      <p>Price: {{ item.amount }}</p>
     </div>
-    <FooterComp/>
+    <div v-else-if="loading">Loading...</div>
+    <div v-else>Error loading item details</div>
   </template>
   
   <script>
-  import FooterComp from '@/components/FooterComp.vue';
-import ItemCard from '@/components/ItemCard.vue';
-import NavBar from '@/components/NavBar.vue';
-  import { mapActions, mapState } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
   
   export default {
     name: 'ItemDetail',
-    components: {
-      ItemCard,
-      NavBar,
-      FooterComp // Register ItemCard component
+    data() {
+      return {
+        loading: true,
+        error: null
+      };
     },
     computed: {
-      ...mapState(['itemDetail']) // Map itemDetail from Vuex store
+      ...mapGetters(['itemDetail']),
+      item() {
+        return this.itemDetail;
+      }
     },
     methods: {
       ...mapActions(['fetchItem']),
-    },
+      async loadItem() {
+        try {
+          const itemID = this.$route.params.id; 
+          await this.fetchItem(itemID); 
+        } catch (error) {
+          console.error("Error fetching item:", error);
+          this.error = 'Failed to load item';
+        } finally {
+          this.loading = false;
+        }
+      }
+    },  
     created() {
-      // Fetch item details when the component is created
-      const itemID = this.$route.params.id; // Get item ID from route
-      this.fetchItem(itemID);
+      this.loadItem();
     }
   };
   </script>
   
   <style scoped>
   .item-detail {
-    padding: 20px;
-    background-color: #361c1c;
-    color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .item-detail img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
   }
   </style>
   

@@ -50,7 +50,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
-      this.$router.push('/login'); // Redirect to login page
+      this.$router.push('/login');
     }
   }
 };
@@ -58,29 +58,29 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color: black; /* Fully black background */
+  background-color: black; 
 }
 
 .navbar-brand, .nav-link {
-  color: white !important; /* Ensuring the text is visible against the black background */
-  text-decoration: none; /* Remove underline from links */
+  color: white !important;
+  text-decoration: none;
 }
 
 .navbar-logo {
-  max-height: 50px; /* Adjust the height of the logo */
-  max-width: 100px; /* Adjust the width of the logo */
-  object-fit: contain; /* Ensure the image fits nicely within the dimensions */
+  max-height: 50px;
+  max-width: 100px; 
+  object-fit: contain;
 }
 
 .user-image {
-  max-height: 40px; /* Adjust the height of the user's image */
-  border-radius: 50%; /* Optional: Make it a circle */
-  margin-right: 10px; /* Space between image and logout button */
-  cursor: pointer; /* Indicate that the image is clickable */
+  max-height: 40px; 
+  border-radius: 50%; 
+  margin-right: 10px; 
+  cursor: pointer; 
 }
 
 .container {
-  max-width: 1200px; /* Optional: Limit container width */
+  max-width: 1200px;
 }
 
 .d-flex {

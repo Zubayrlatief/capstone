@@ -80,7 +80,7 @@ const router = createRouter({
   routes,
 });
 
-// Add navigation guards to check for admin access
+
 router.beforeEach(async (to, from, next) => {
   const isAuthenticated = store.getters.isAuthenticated;
   const isAdmin = store.getters.isAdmin;

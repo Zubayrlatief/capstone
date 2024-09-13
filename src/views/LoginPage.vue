@@ -66,7 +66,7 @@ export default {
     localStorage.setItem('token', token);
     this.$store.commit('setToken', token);
 
-    // Fetch user info after login
+    // FETCH INFO AFTER LOGIN
     await this.$store.dispatch('fetchUser');
 
     this.message = 'Login successful!';
@@ -85,44 +85,44 @@ export default {
 <style scoped>
 .container {
   max-width: 500px;
-  background-color: #361c1c; /* Background color of the container */
+  background-color: #361c1c; 
   padding: 95px;
-  border-radius: 8px; /* Rounded corners for the container */
+  border-radius: 8px; 
 }
 
 h2 {
-  color: white; /* Text color for the heading */
+  color: white; 
 }
 
 .form-label {
-  color: white; /* Label text color */
+  color: white; 
 }
 
 .form-control {
-  background-color: #4e2b2b; /* Input background color */
-  color: white; /* Input text color */
-  border: 1px solid #6e4c4c; /* Input border color */
+  background-color: #4e2b2b; 
+  color: white;
+  border: 1px solid #6e4c4c; 
 }
 
 .btn-primary {
-  background-color: #f39c12; /* Button background color */
-  border: none; /* Remove button border */
+  background-color: #f39c12; 
+  border: none; 
 }
 
 .btn-primary:hover {
-  background-color: #e67e22; /* Button hover color */
+  background-color: #e67e22; 
 }
 
 .alert {
   padding: 15px;
-  color: white; /* Text color in the alert box */
+  color: white; 
 }
 
 .alert-success {
-  background-color: #28a745; /* Success alert background */
+  background-color: #28a745;
 }
 
 .alert-danger {
-  background-color: #dc3545; /* Danger alert background */
+  background-color: #dc3545; 
 }
 </style>

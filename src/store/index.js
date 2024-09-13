@@ -4,11 +4,11 @@ import axios from 'axios';
 const store = createStore({
   state: {
     isAuthenticated: !!localStorage.getItem('token'),
-    isAdmin: false, // Add state for admin status
-    user: null, // Add state for user info
+    isAdmin: false, 
+    user: null, 
     items: [],
     itemDetail: null,
-    cart: JSON.parse(localStorage.getItem('cart')) || [], // Load cart from local storage
+    cart: JSON.parse(localStorage.getItem('cart')) || [], 
   },
   mutations: {
     SET_ITEMS(state, items) {
@@ -54,17 +54,17 @@ const store = createStore({
     },
     LOGOUT(state) {
       state.isAuthenticated = false;
-      state.isAdmin = false; // Reset admin status on logout
-      state.cart = []; // Clear cart in Vuex store
-      localStorage.removeItem('cart'); // Remove cart items from localStorage
-      localStorage.removeItem('token'); // Remove token on logout
+      state.isAdmin = false; 
+      state.cart = []; 
+      localStorage.removeItem('cart'); 
+      localStorage.removeItem('token'); 
     },
     setToken(state, token) {
       state.token = token;
     },
     SET_USER(state, user) {
       state.user = user;
-      state.isAdmin = user && user.role === 'admin'; // Ensure role comparison is correct
+      state.isAdmin = user && user.role === 'admin'; 
     }
   },
   actions: {
@@ -114,17 +114,18 @@ const store = createStore({
         commit('ADD_TO_CART', response.data);
       } catch (error) {
         console.error('Error adding to cart:', error.response ? error.response.data : error.message);
+        throw error;
       }
     },
+    
     async fetchUser({ commit }) {
       try {
         const response = await axios.get('https://capstone-2-p8rd.onrender.com/users/users/me');
-        console.log('Fetched user data:', response.data); // Debugging line
+        console.log('Fetched user data:', response.data); 
         commit('SET_USER', response.data);
       } catch (error) {
         console.error('Error fetching user:', error);
         if (error.response && error.response.status === 401) {
-          // Token might be invalid, clear the local storage and update the store
           localStorage.removeItem('token');
           commit('LOGOUT');
         }
@@ -163,13 +164,13 @@ const store = createStore({
       return state.items;
     },
     cartItems(state) {
-      return state.cart || []; // Return empty array if cart is undefined
+      return state.cart || []; 
     },
     cartTotal(state) {
       return (state.cart || []).reduce((total, item) => total + item.quantity * item.amount, 0);
     },
     itemDetail(state) {
-      return state.itemDetail; // Add getter for item detail
+      return state.itemDetail; 
     },
   }
 });

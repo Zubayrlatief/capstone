@@ -1,6 +1,5 @@
 <template>
   <div class="item-card">
-    <!-- Display item details -->
     <img :src="item.prodURL" alt="Item Image" />
     <h2>{{ item.prodName }}</h2>
     <p>{{ formatAmount(item.amount) }}</p>
@@ -55,7 +54,6 @@ export default {
 </script>
 
 <style scoped>
-/* Styles for ItemCard component */
 .item-card {
   border: 1px solid #631a1a;
   background-color: black;
