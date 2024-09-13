@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
     <div class="cart container mt-5">
       <h2 class="text-center">Your Cart</h2>
   
@@ -56,25 +57,37 @@
         <router-link to="/checkout" class="btn btn-primary">Proceed to Checkout</router-link>
       </div>
     </div>
+    <FooterComp/>
   </template>
   
   <script>
   import { mapGetters, mapActions } from 'vuex';
-  
+  import NavBar from '@/components/NavBar.vue';
+  import FooterComp from '@/components/FooterComp.vue';
+
   export default {
+    components: {
+    NavBar,
+    FooterComp
+  },
     computed: {
       ...mapGetters(['cartItems', 'cartTotal'])
     },
     methods: {
       ...mapActions(['removeFromCart', 'updateCartItemQuantity']),
-      updateQuantity(itemID, quantity) {
-        if (quantity <= 0) {
-          this.removeFromCart(itemID);
-        } else {
-          this.updateCartItemQuantity({ itemID, quantity });
-        }
-      }
+  updateQuantity(itemID, quantity) {
+    if (quantity <= 0) {
+      this.removeFromCart(itemID); // Remove item if quantity is 0 or less
+    } else {
+      this.updateCartItemQuantity({ itemID, quantity });
     }
+  }
+    },
+    created() {
+  const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+  this.$store.commit('SET_CART', storedCart);
+}
+
   };
   </script>
   
@@ -82,6 +95,10 @@
   .card {
     border: 1px solid #dee2e6;
     border-radius: .25rem;
+  }
+
+  .cart{
+    padding: 140px;
   }
   </style>
   

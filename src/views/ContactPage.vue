@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
     <div class="container mt-5">
       <h1 class="mb-4">Contact Us</h1>
       <form @submit.prevent="sendMessage">
@@ -32,17 +33,24 @@
             required
           ></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <button type="submit" class="btn btn-dark">Send Message</button>
         <div v-if="errorMessage" class="mt-3 text-danger">{{ errorMessage }}</div>
         <div v-if="successMessage" class="mt-3 text-success">{{ successMessage }}</div>
       </form>
     </div>
+    <FooterComp/>
   </template>
   
   <script>
   import axios from 'axios';
-  
+  import NavBar from '@/components/NavBar.vue';
+  import FooterComp from '@/components/FooterComp.vue';
+
   export default {
+    components: {
+    NavBar,
+    FooterComp
+  },
     data() {
       return {
         form: {

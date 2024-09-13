@@ -66,15 +66,18 @@
       </div>
     </form>
   </div>
+  <FooterComp/>
 </template>
 
 <script>
+import FooterComp from '@/components/FooterComp.vue';
 import NavBar from '@/components/NavBar.vue';
 import axios from 'axios';
 
 export default {
   components: {
     NavBar,
+    FooterComp
   },
   data() {
     return {
@@ -117,9 +120,43 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .container {
   max-width: 500px;
+}
+
+.form-control {
+  color: white;
+  background-color: #343a40; /* Optional: dark background for better readability */
+  border-color: #495057; /* Optional: matching border color */
+}
+
+.form-control::placeholder {
+  color: #6c757d; /* Optional: placeholder text color */
+}
+
+.btn-primary {
+  background-color: #007bff; /* Bootstrap's default primary color */
+  border-color: #007bff;
+}
+
+.alert {
+  color: white;
+}
+
+.alert-success {
+  background-color: #28a745;
+}
+
+.alert-danger {
+  background-color: #dc3545;
+}
+
+h2 {
+  color: white;
+}
+
+label {
+  color: white;
 }
 </style>

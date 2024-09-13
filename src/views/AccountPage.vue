@@ -1,158 +1,159 @@
 <template>
-  <div class="account-page container mt-5">
+  <div>
     <NavBar />
-    <h2 class="text-center">Account Details</h2>
-    
-    <div v-if="loading" class="text-center">
-      <LoadingSpinner />
-    </div>
+    <div class="account-page container mt-5">
+      <h2 class="text-center">Account Details</h2>
 
-    <div v-else>
-      <div v-if="!isEditing">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Account Information</h5>
-            <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
-            <p><strong>Email:</strong> {{ user.emailAdd }}</p>
-            <p><strong>Age:</strong> {{ user.userAge }}</p>
-            <p><strong>Gender:</strong> {{ user.Gender }}</p>
-            <p><strong>Role:</strong> {{ user.userRole }}</p> <!-- Display user role -->
-            <p><strong>Profile URL:</strong> <a :href="user.userProfile" target="_blank">{{ user.userProfile }}</a></p>
-            <button class="btn btn-primary" @click="isEditing = true">Edit</button>
-            <button class="btn btn-danger" @click="deleteAccount">Delete Account</button>
+      <div v-if="loading" class="text-center">
+        <LoadingSpinner />
+      </div>
+
+      <div v-else>
+        <div v-if="!isEditing">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Account Information</h5>
+              <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+              <p><strong>Email:</strong> {{ user.emailAdd }}</p>
+              <p><strong>Age:</strong> {{ user.userAge }}</p>
+              <p><strong>Gender:</strong> {{ user.Gender }}</p>
+              <p><strong>Role:</strong> {{ user.userRole }}</p>
+              <p><strong>Profile URL:</strong> <a :href="user.userProfile" target="_blank">{{ user.userProfile }}</a></p>
+              <button class="btn btn-primary" @click="isEditing = true">Edit</button>
+              <button class="btn btn-primary" @click="deleteAccount">Delete Account</button>
+            </div>
           </div>
+
+          <!-- Link to View Cart -->
+          <router-link to="/cart" class="btn btn-secondary">View Cart</router-link>
+          
+          <!-- Link to Admin Page -->
+          <router-link to="/admin" class="btn btn-secondary mt-2">Admin Page</router-link>
         </div>
 
-        <router-link to="/cart" class="btn btn-secondary">View Cart</router-link>
-      </div>
-      
-      <div v-else>
-        <h2 class="text-center">Edit Account</h2>
-        <form @submit.prevent="updateAccount">
-          <div class="mb-3">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" v-model="user.firstName" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" v-model="user.lastName" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" v-model="user.emailAdd" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="age" class="form-label">Age</label>
-            <input type="number" v-model="user.userAge" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="gender" class="form-label">Gender</label>
-            <input type="text" v-model="user.Gender" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="role" class="form-label">Role</label>
-            <input type="text" v-model="user.userRole" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="profileUrl" class="form-label">Profile URL</label>
-            <input type="text" v-model="user.userProfile" class="form-control" required />
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-          <button type="button" class="btn btn-secondary w-100 mt-2" @click="isEditing = false">Cancel</button>
-        </form>
+        <div v-else>
+          <h2 class="text-center">Edit Account</h2>
+          <form @submit.prevent="updateAccount">
+            <div class="mb-3">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" v-model="user.firstName" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" v-model="user.lastName" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" v-model="user.emailAdd" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="age" class="form-label">Age</label>
+              <input type="number" v-model="user.userAge" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <input type="text" v-model="user.Gender" class="form-control" required />
+            </div>
+            <!-- Add other fields as necessary -->
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
       </div>
     </div>
+    <FooterComp/>
   </div>
 </template>
 
+
 <script>
-import NavBar from '@/components/NavBar.vue';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import NavBar from '@/components/NavBar.vue';
+import FooterComp from '@/components/FooterComp.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 export default {
-  components: {
-    NavBar,
-    LoadingSpinner
-  },
-  data() {
-    return {
-      user: {},
-      loading: true,
-      isEditing: false,
-    };
-  },
-  methods: {
-    async fetchUserData() {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('No token found');
-        }
-
-        const decoded = jwt_decode(token);
-        if (!decoded.emailAdd) {
-          throw new Error('Decoded token does not contain emailAdd');
-        }
-
-        const encodedEmail = encodeURIComponent(decoded.emailAdd);
-
-        const response = await axios.get(`https://capstone-2-p8rd.onrender.com/users/email/${encodedEmail}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        this.user = response.data;
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        this.loading = false;
+components: {
+  NavBar,
+  FooterComp,
+  LoadingSpinner
+},
+data() {
+  return {
+    user: {},
+    isEditing: false,
+    loading: true,
+    message: '',
+    success: false,
+  };
+},
+async created() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('https://capstone-2-p8rd.onrender.com/users/users/me', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    },
-
-    async updateAccount() {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('No token found');
-        }
-        await axios.patch(`https://capstone-2-p8rd.onrender.com/users/${this.user.userID}`, this.user, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        this.isEditing = false;
-      } catch (error) {
-        console.error('Error updating account:', error);
-      }
-    },
-
-    async deleteAccount() {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('No token found');
-        }
-        const decoded = jwt_decode(token);
-        await axios.delete(`https://capstone-2-p8rd.onrender.com/users/email/${encodeURIComponent(decoded.emailAdd)}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        localStorage.removeItem('token');
-        this.$router.push('/login');
-      } catch (error) {
-        console.error('Error deleting account:', error);
-      }
-    }
-  },
-  created() {
-    this.fetchUserData();
+    });
+    this.user = response.data;
+  } catch (error) {
+    this.message = 'Error fetching user data: ' + (error.response?.data || error.message);
+    this.success = false;
+  } finally {
+    this.loading = false;
   }
+},
+methods: {
+  async updateAccount() {
+    // Your update logic here
+  },
+  async deleteAccount() {
+    // Your delete logic here
+  }
+},
 };
 </script>
 
 <style scoped>
 .container {
-  max-width: 800px;
+max-width: 500px;
+background-color: #361c1c; /* Background color of the container */
+padding: 95px;
+border-radius: 8px; /* Rounded corners for the container */
 }
-.card {
-  padding: 20px;
+
+h2 {
+color: white; /* Text color for the heading */
+}
+
+.form-label {
+color: white; /* Label text color */
+}
+
+.form-control {
+background-color: #4e2b2b; /* Input background color */
+color: white; /* Input text color */
+border: 1px solid #6e4c4c; /* Input border color */
+}
+
+.btn-primary {
+background-color: #f39c12; /* Button background color */
+border: none; /* Remove button border */
+}
+
+.btn-primary:hover {
+background-color: #e67e22; /* Button hover color */
+}
+
+.alert {
+padding: 15px;
+color: white; /* Text color in the alert box */
+}
+
+.alert-success {
+background-color: #28a745; /* Success alert background */
+}
+
+.alert-danger {
+background-color: #dc3545; /* Danger alert background */
 }
 </style>

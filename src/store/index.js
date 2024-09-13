@@ -2,15 +2,20 @@ import { createStore } from 'vuex';
 import axios from 'axios';
 
 const store = createStore({
-  state() {
-    return {
-      items: [],
-      cart: [], // Cart state
-    };
+  state: {
+    isAuthenticated: !!localStorage.getItem('token'),
+    isAdmin: false, // Add state for admin status
+    user: null, // Add state for user info
+    items: [],
+    itemDetail: null,
+    cart: JSON.parse(localStorage.getItem('cart')) || [], // Load cart from local storage
   },
   mutations: {
     SET_ITEMS(state, items) {
       state.items = items;
+    },
+    SET_ITEM_DETAIL(state, item) {
+      state.itemDetail = item;
     },
     ADD_ITEM(state, newItem) {
       state.items.push(newItem);
@@ -27,21 +32,39 @@ const store = createStore({
     ADD_TO_CART(state, item) {
       const existingItem = state.cart.find(cartItem => cartItem.itemID === item.itemID);
       if (existingItem) {
-        // Increment quantity if item is already in cart
         existingItem.quantity += 1;
       } else {
-        // Add new item to cart with initial quantity
         state.cart.push({ ...item, quantity: 1 });
       }
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     REMOVE_FROM_CART(state, itemID) {
       state.cart = state.cart.filter(item => item.itemID !== itemID);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     UPDATE_CART_ITEM_QUANTITY(state, { itemID, quantity }) {
       const item = state.cart.find(cartItem => cartItem.itemID === itemID);
       if (item) {
         item.quantity = quantity;
       }
+      localStorage.setItem('cart', JSON.stringify(state.cart));
+    },
+    SET_CART(state, cart) {
+      state.cart = cart;
+    },
+    LOGOUT(state) {
+      state.isAuthenticated = false;
+      state.isAdmin = false; // Reset admin status on logout
+      state.cart = []; // Clear cart in Vuex store
+      localStorage.removeItem('cart'); // Remove cart items from localStorage
+      localStorage.removeItem('token'); // Remove token on logout
+    },
+    setToken(state, token) {
+      state.token = token;
+    },
+    SET_USER(state, user) {
+      state.user = user;
+      state.isAdmin = user && user.role === 'admin'; // Ensure role comparison is correct
     }
   },
   actions: {
@@ -51,6 +74,14 @@ const store = createStore({
         commit('SET_ITEMS', response.data);
       } catch (error) {
         console.error('Error fetching items:', error);
+      }
+    },
+    async fetchItem({ commit }, id) {
+      try {
+        const response = await axios.get(`https://capstone-2-p8rd.onrender.com/items/${id}`);
+        commit('SET_ITEM_DETAIL', response.data);
+      } catch (error) {
+        console.error('Error fetching item details:', error);
       }
     },
     async addItem({ commit }, newItem) {
@@ -77,27 +108,70 @@ const store = createStore({
         console.error('Error deleting item:', error);
       }
     },
-    addToCart({ commit }, item) {
-      commit('ADD_TO_CART', item);
+    async addToCart({ commit }, item) {
+      try {
+        const response = await axios.post('https://capstone-2-p8rd.onrender.com/api/cart', item);
+        commit('ADD_TO_CART', response.data);
+      } catch (error) {
+        console.error('Error adding to cart:', error.response ? error.response.data : error.message);
+      }
     },
-    removeFromCart({ commit }, itemID) {
-      commit('REMOVE_FROM_CART', itemID);
+    async fetchUser({ commit }) {
+      try {
+        const response = await axios.get('https://capstone-2-p8rd.onrender.com/users/users/me');
+        console.log('Fetched user data:', response.data); // Debugging line
+        commit('SET_USER', response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        if (error.response && error.response.status === 401) {
+          // Token might be invalid, clear the local storage and update the store
+          localStorage.removeItem('token');
+          commit('LOGOUT');
+        }
+      }
     },
-    updateCartItemQuantity({ commit }, { itemID, quantity }) {
-      commit('UPDATE_CART_ITEM_QUANTITY', { itemID, quantity });
+    logout({ commit }) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('cart');
+      commit('LOGOUT');
+    },
+    async removeFromCart({ commit }, itemID) {
+      try {
+        await axios.delete(`https://capstone-2-p8rd.onrender.com/cart/${itemID}`);
+        commit('REMOVE_FROM_CART', itemID);
+      } catch (error) {
+        console.error('Error removing from cart:', error);
+      }
+    },
+    async updateCartItemQuantity({ commit }, { itemID, quantity }) {
+      try {
+        await axios.patch(`https://capstone-2-p8rd.onrender.com/cart/${itemID}`, { quantity });
+        commit('UPDATE_CART_ITEM_QUANTITY', { itemID, quantity });
+      } catch (error) {
+        console.error('Error updating cart item quantity:', error);
+      }
     }
   },
   getters: {
+    isAuthenticated(state) {
+      return state.isAuthenticated;
+    },
+    isAdmin(state) {
+      return state.isAdmin;
+    },
     allItems(state) {
       return state.items;
     },
     cartItems(state) {
-      return state.cart;
+      return state.cart || []; // Return empty array if cart is undefined
     },
     cartTotal(state) {
-      return state.cart.reduce((total, item) => total + item.quantity * item.amount, 0);
-    }
-  },
+      return (state.cart || []).reduce((total, item) => total + item.quantity * item.amount, 0);
+    },
+    itemDetail(state) {
+      return state.itemDetail; // Add getter for item detail
+    },
+  }
 });
 
 export default store;

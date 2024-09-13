@@ -6,7 +6,10 @@
       class="rounded"
       alt="..."
     />
-    <h1 class="heading">HERMESS FITNESS</h1>
+    <div class="text-container">
+      <h1 class="heading">HERMESS FITNESS</h1>
+      <h4 class="heading">The legacy will last forever</h4>
+    </div>
     <img
       src="https://zubayrlatief.github.io/capestone-hosted-images/landing%20pic%202.png"
       class="rounded"
@@ -37,7 +40,7 @@ html, body {
 }
 
 .container {
-  background-color: black;
+  background-color: #361c1c; /* Updated background color */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -45,6 +48,7 @@ html, body {
   width: 100%;
   height: 100vh; /* Full viewport height */
   box-sizing: border-box; /* Include padding in width and height */
+  text-align: center; /* Center align text */
 }
 
 .container img {
@@ -52,10 +56,16 @@ html, body {
   height: auto;
 }
 
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
 .heading {
   color: white;
-  text-align: center;
-  flex: 1;
   margin: 0 10px;
 }
 
@@ -78,14 +88,12 @@ html, body {
 
   .heading {
     font-size: 1.5rem;
-    flex: 2;
   }
 }
 
 @media (max-width: 576px) {
   .heading {
     font-size: 1.2rem;
-    flex: 3;
   }
 
   .container img {

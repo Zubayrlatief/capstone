@@ -1,19 +1,22 @@
+// router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
+import store from '@/store';
 import ItemsList from '@/views/ItemsList.vue';
 import LandingPage from '@/views/LandingPage.vue';
 import RegisterPage from '@/views/RegisterPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import AccountPage from '@/views/AccountPage.vue';
-import AdminPage from '@/views/AdminPage.vue'; // Import the AdminPage component
+import AdminPage from '@/views/AdminPage.vue'; 
 import PhilosophyPage from '@/views/PhilosophyPage.vue';
 import ContactPage from '@/views/ContactPage.vue';
 import CartPage from '@/views/CartPage.vue';
 import CheckoutPage from '@/views/CheckoutPage.vue';
+import ItemDetail from '@/views/ItemDetail.vue';
 
 const routes = [
   {
     path: '/philosophy',
-    name: 'Philosophy', 
+    name: 'Philosophy',
     component: PhilosophyPage
   },
   {
@@ -21,6 +24,13 @@ const routes = [
     name: 'ItemsList',
     component: ItemsList,
   },
+  {
+    path: '/items/:id',
+    name: 'ItemDetail',
+    component: ItemDetail,
+    props: route => ({ id: route.params.id })
+  },
+
   {
     path: '/',
     name: 'Home',
@@ -41,12 +51,11 @@ const routes = [
     name: 'AccountPage',
     component: AccountPage,
   },
-
   {
-    path: '/admin', // Add a route for the admin page
+    path: '/admin',
     name: 'AdminPage',
     component: AdminPage,
-    meta: { requiresAuth: true, isAdmin: true }, // Add meta field for route guards
+    meta: { requiresAuth: true, admin: true } 
   },
   {
     path: '/cart',
@@ -61,7 +70,7 @@ const routes = [
   },
   {
     path: '/contact',
-    name:  'ContactPage',
+    name: 'ContactPage',
     component: ContactPage,
   }
 ];
@@ -72,9 +81,9 @@ const router = createRouter({
 });
 
 // Add navigation guards to check for admin access
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = false; // Replace with your actual authentication logic
-  const isAdmin = false; // Replace with your actual admin check logic
+router.beforeEach(async (to, from, next) => {
+  const isAuthenticated = store.getters.isAuthenticated;
+  const isAdmin = store.getters.isAdmin;
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!isAuthenticated) {

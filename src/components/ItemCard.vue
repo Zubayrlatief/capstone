@@ -4,7 +4,15 @@
     <img :src="item.prodURL" alt="Item Image" />
     <h2>{{ item.prodName }}</h2>
     <p>{{ formatAmount(item.amount) }}</p>
-    <button @click="addToCart(item)">Add to Cart</button>
+    <button @click.stop="addToCart(item)">
+      Add to Cart
+    </button>
+    <button @click.stop="viewItemDetails(item.prodID)">
+      View Item
+    </button>
+    <p v-if="!isAuthenticated" class="auth-message">
+      Please sign in to add items to your cart.
+    </p>
   </div>
 </template>
 
@@ -17,17 +25,30 @@ export default {
       required: true
     }
   },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
   methods: {
     formatAmount(amount) {
       if (typeof amount === 'number') {
-        return amount.toFixed(2); // Format amount to 2 decimal places
+        return amount.toFixed(2);
       } else if (typeof amount === 'string') {
-        return Number(amount).toFixed(2); // Convert string to number and format
+        return Number(amount).toFixed(2);
       }
-      return 'N/A'; // Default value if amount is neither number nor string
+      return 'N/A';
     },
     addToCart(item) {
-      this.$emit('add-to-cart', item);
+      console.log('Item to add:', item);
+      if (this.isAuthenticated) {
+        this.$emit('add-to-cart', item);
+      } else {
+        alert('Please sign in to add items to your cart.');
+      }
+    },
+    viewItemDetails(prodID) {
+      this.$router.push(`/items/${prodID}`);
     }
   }
 };
@@ -36,10 +57,12 @@ export default {
 <style scoped>
 /* Styles for ItemCard component */
 .item-card {
-  border: 1px solid #ccc;
+  border: 1px solid #631a1a;
+  background-color: black;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
+  cursor: pointer;
 }
 .item-card img {
   max-width: 100%;
@@ -48,4 +71,9 @@ export default {
 .item-card button {
   margin-top: 10px;
 }
+.auth-message {
+  color: red;
+  font-size: 0.9em;
+}
 </style>
+

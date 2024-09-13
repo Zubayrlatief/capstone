@@ -1,71 +1,57 @@
 <template>
-  <div>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-black">
-      <div class="container">
-        <div class="d-flex w-100 justify-content-between align-items-center">
-          <!-- Left side: Philosophy and Store -->
-          <div class="d-flex">
-            <a class="nav-item nav-link" href="/philosophy">Philosophy</a>
-            <a class="nav-item nav-link" href="/items">Store</a>
-          </div>
-
-          <!-- Centered Logo -->
-          <a class="navbar-brand mx-auto" href="/">
-            <img src="https://zubayrlatief.github.io/capestone-hosted-images/H (1)(2).jpg" alt="Brand Logo" class="navbar-logo">
-          </a>
-
-          <!-- Right side: Cart, Sign Up, Sign In, and User Image -->
-          <div class="d-flex">
-            <a class="nav-item nav-link" href="/cart">Cart</a>
-            <template v-if="!isLoggedIn">
-              <a class="nav-item nav-link" href="/register">Sign Up</a>
-              <a class="nav-item nav-link" href="/login">Sign In</a>
-            </template>
-            <template v-else>
-              <a :href="accountPageUrl" class="d-flex align-items-center">
-                <img :src="userImage" alt="User" class="user-image" />
-              </a>
-              <button class="btn btn-outline-light" @click="logout">Logout</button>
-            </template>
-          </div>
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-black">
+    <div class="container">
+      <div class="d-flex w-100 justify-content-between align-items-center">
+        <div class="d-flex">
+          <a class="nav-item nav-link" href="/philosophy">Philosophy</a>
+          <a class="nav-item nav-link" href="/items">Store</a>
+          <template v-if="isAdmin">
+            <a class="nav-item nav-link" href="/admin">Admin</a>
+          </template>
+        </div>
+        <a class="navbar-brand mx-auto" href="/">
+          <img src="https://zubayrlatief.github.io/capestone-hosted-images/H (1)(2).jpg" alt="Brand Logo" class="navbar-logo">
+        </a>
+        <div class="d-flex">
+          <a class="nav-item nav-link" href="/cart">Cart</a>
+          <template v-if="!isLoggedIn">
+            <a class="nav-item nav-link" href="/register">Sign Up</a>
+            <a class="nav-item nav-link" href="/login">Sign In</a>
+          </template>
+          <template v-else>
+            <a :href="accountPageUrl" class="d-flex align-items-center">
+              <img :src="userImage" alt="User" class="user-image" />
+            </a>
+            <button class="btn btn-outline-light" @click="logout">Logout</button>
+          </template>
         </div>
       </div>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'NavBar',
-  data() {
-    return {
-      isLoggedIn: false, // Default state
-      userImage: '', // URL of user's image
-      accountPageUrl: '/account' // URL for the account page
-    };
+  computed: {
+    ...mapGetters(['isAuthenticated', 'isAdmin']),
+  isLoggedIn() {
+    return this.isAuthenticated;
   },
+  userImage() {
+    return this.isLoggedIn ? 'https://zubayrlatief.github.io/capestone-hosted-images/logo.png' : '';
+  },
+  accountPageUrl() {
+    return '/account';
+  }
+},
   methods: {
-    checkAuth() {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.isLoggedIn = true;
-        // Fetch user data to get the image URL (assuming it's stored in user data)
-        // Example:
-        // const decoded = jwt_decode(token);
-        // Use a dummy URL for testing
-        this.userImage = 'https://zubayrlatief.github.io/capestone-hosted-images/logo.png'; // Replace with actual user image URL logic
-        console.log('User Image URL:', this.userImage); // Debugging line
-      }
-    },
     logout() {
-      localStorage.removeItem('token');
-      this.isLoggedIn = false;
-      this.userImage = '';
+      this.$store.dispatch('logout');
       this.$router.push('/login'); // Redirect to login page
     }
-  },
-  created() {
-    this.checkAuth();
   }
 };
 </script>

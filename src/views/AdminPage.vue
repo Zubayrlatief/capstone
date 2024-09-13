@@ -1,112 +1,165 @@
 <template>
-    <div class="admin-page container">
-      <h1>Admin Panel</h1>
-      
-      <!-- Form for Creating/Updating Items -->
-      <form @submit.prevent="submitForm">
-        <div class="mb-3">
-          <label for="prodName" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="prodName" v-model="item.prodName" required>
-        </div>
-        <div class="mb-3">
-          <label for="quantity" class="form-label">Quantity</label>
-          <input type="number" class="form-control" id="quantity" v-model="item.quantity" required>
-        </div>
-        <div class="mb-3">
-          <label for="amount" class="form-label">Amount</label>
-          <input type="number" class="form-control" id="amount" v-model="item.amount" required>
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label">Description</label>
-          <textarea class="form-control" id="description" v-model="item.description"></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="category" class="form-label">Category</label>
-          <input type="text" class="form-control" id="category" v-model="item.Category" required>
-        </div>
-        <div class="mb-3">
-          <label for="prodURL" class="form-label">Product URL</label>
-          <input type="text" class="form-control" id="prodURL" v-model="item.prodURL" required>
-        </div>
-        <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Create' }} Item</button>
-      </form>
-  
-      <!-- List of Items with Delete Option -->
-      <h2 class="mt-5">Manage Items</h2>
-      <ul class="list-group">
-        <li v-for="item in items" :key="item.itemID" class="list-group-item d-flex justify-content-between align-items-center">
-          {{ item.prodName }}
-          <div>
-            <button @click="editItem(item)" class="btn btn-secondary btn-sm">Edit</button>
-            <button @click="deleteItem(item.itemID)" class="btn btn-danger btn-sm">Delete</button>
+  <div>
+    <NavBar/>
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Admin Panel</h1>
+      <button class="btn btn-primary mb-3" @click="fetchItems">Refresh Items</button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in items" :key="item.prodID">
+            <td>{{ item.prodID }}</td>
+            <td>{{ item.prodName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.category }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" @click="editItem(item.prodID)">Edit</button>
+              <button class="btn btn-danger btn-sm" @click="deleteItem(item.prodID)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Add/Edit Item Form -->
+      <div v-if="currentItem !== null" class="mt-4">
+        <h2>{{ currentItem.prodID ? 'Edit Item' : 'Add Item' }}</h2>
+        <form @submit.prevent="saveItem">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input id="name" v-model="currentItem.prodName" class="form-control" placeholder="Name" required />
           </div>
-        </li>
-      </ul>
+          <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input id="quantity" v-model="currentItem.quantity" type="number" class="form-control" placeholder="Quantity" required />
+          </div>
+          <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input id="amount" v-model="currentItem.amount" type="number" step="0.01" class="form-control" placeholder="Amount" required />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" v-model="currentItem.description" class="form-control" placeholder="Description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input id="category" v-model="currentItem.category" class="form-control" placeholder="Category" required />
+          </div>
+          <div class="mb-3">
+      <label for="prodURL" class="form-label">Product URL</label>
+      <input id="prodURL" v-model="currentItem.prodURL" class="form-control" placeholder="Product URL" />
     </div>
-  </template>
-  
-  <script>
-  import { mapActions, mapState } from 'vuex';
-  
-  export default {
-    data() {
-      return {
-        item: {
-          prodName: '',
-          quantity: 0,
-          amount: 0,
-          description: '',
-          Category: '',
-          prodURL: '',
-        },
-        isEditing: false,
-        editItemID: null,
-      };
-    },
-    computed: {
-      ...mapState(['items']),
-    },
-    methods: {
-      ...mapActions(['createItem', 'updateItem', 'deleteItem', 'fetchItems']),
-      submitForm() {
-        if (this.isEditing) {
-          this.updateItem({ ...this.item, itemID: this.editItemID });
-        } else {
-          this.createItem(this.item);
-        }
-        this.resetForm();
-      },
-      resetForm() {
-        this.item = {
-          prodName: '',
-          quantity: 0,
-          amount: 0,
-          description: '',
-          Category: '',
-          prodURL: '',
-        };
-        this.isEditing = false;
-        this.editItemID = null;
-      },
-      editItem(item) {
-        this.item = { ...item };
-        this.isEditing = true;
-        this.editItemID = item.itemID;
-      },
-      deleteItem(itemID) {
-        this.deleteItem(itemID);
-      },
-    },
-    created() {
-      this.fetchItems();
-    },
+
+          <button type="submit" class="btn btn-success">Save</button>
+        </form>
+      </div>
+    </div>
+    <FooterComp/>
+  </div>
+</template>
+
+<script>
+import FooterComp from '@/components/FooterComp.vue';
+import NavBar from '@/components/NavBar.vue';
+import axios from 'axios';
+
+export default {
+  components: {
+    FooterComp,
+    NavBar
+  },
+  data() {
+  return {
+    items: [],
+    currentItem: { prodID: null, prodName: '', quantity: '', amount: '', description: '', category: '', prodURL: '' }, // Initialize with default values
   };
-  </script>
-  
-  <style scoped>
-  .admin-page {
-    max-width: 800px;
-    margin: 0 auto;
+},
+  methods: {
+    async fetchItems() {
+      try {
+        const response = await axios.get('https://capstone-2-p8rd.onrender.com/items');
+        this.items = response.data;
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    },
+    async deleteItem(id) {
+      try {
+        if (id) {
+          const url = `https://capstone-2-p8rd.onrender.com/items/delete/${id}`;
+          await axios.delete(url, {
+            headers: { Authorization: `Bearer ${this.$store.state.token}` }
+          });
+          this.fetchItems(); // Refresh items after deletion
+        } else {
+          console.error('Item ID is undefined');
+        }
+      } catch (error) {
+        console.error('Error deleting item:', error.response ? error.response.data : error.message);
+      }
+    },
+    async editItem(id) {
+  try {
+    const response = await axios.get(`https://capstone-2-p8rd.onrender.com/items/${id}`);
+    this.currentItem = response.data;
+  } catch (error) {
+    console.error('Error fetching item for edit:', error);
   }
-  </style>
-  
+},
+
+async saveItem() {
+  try {
+    console.log('Saving item:', this.currentItem); // Add this line to debug
+
+    if (this.currentItem.prodID) {
+      // Update existing item
+      await axios.put(`https://capstone-2-p8rd.onrender.com/items/${this.currentItem.prodID}`, this.currentItem, {
+        headers: { Authorization: `Bearer ${this.$store.state.token}` }
+      });
+    } else {
+      // Add new item
+      await axios.post('https://capstone-2-p8rd.onrender.com/items', this.currentItem, {
+        headers: { Authorization: `Bearer ${this.$store.state.token}` }
+      });
+    }
+    
+    this.currentItem = null;
+    this.fetchItems();
+  } catch (error) {
+    console.error('Error saving item:', error);
+  }
+}
+
+
+  },
+  mounted() {
+    this.fetchItems();
+  }
+};
+
+</script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+h1 {
+  color: white;
+}
+.table {
+  color: white;
+}
+.btn {
+  margin-right: 10px;
+}
+</style>
