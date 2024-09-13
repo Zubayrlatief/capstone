@@ -1,4 +1,3 @@
-// middleware/adminAuth.js
 import jwt from 'jsonwebtoken';
 
 const adminAuth = (req, res, next) => {
@@ -13,12 +12,11 @@ const adminAuth = (req, res, next) => {
             return res.status(403).send('Forbidden');
         }
 
-        // Check if user is an admin
         if (user.role !== 'admin') {
             return res.status(403).send('Forbidden');
         }
 
-        req.user = user; // Add user info to request object
+        req.user = user; 
         next();
     });
 };

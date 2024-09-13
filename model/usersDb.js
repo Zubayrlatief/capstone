@@ -1,5 +1,4 @@
 import {createPool} from 'mysql2/promise'
-//promise- allows to handle asynchronys
 import {config} from 'dotenv'
 config()
 
@@ -19,12 +18,11 @@ const getUserDb = async (id) =>{
     return data
 }
 // Fetch user by email for login
-// Fetch user by email for login
 const loginUserDb = async (emailAdd) => {
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
-        if (rows.length === 0) return null;  // No user found
-        return rows[0]; // Return the first matching user
+        if (rows.length === 0) return null;  
+        return rows[0];
     } catch (error) {
         console.error("Error fetching user from the database:", error);
         throw error;
@@ -50,7 +48,7 @@ const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emai
 const getUserDbByEmail = async (emailAdd) => {
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE emailAdd = ?', [emailAdd]);
-        return rows.length > 0 ? rows[0] : null; // Return user if found, null otherwise
+        return rows.length > 0 ? rows[0] : null; 
     } catch (error) {
         console.error('Error fetching user by email:', error);
         throw error;
@@ -61,20 +59,18 @@ const getUserDbByEmail = async (emailAdd) => {
 //delete
 const deleteUserDb = async (id) => {
     try {
-        // Execute the delete query
         const result = await pool.query(`
             DELETE FROM users WHERE userID = ?`, [id]);
 
-        // Check if any rows were affected
         if (result.affectedRows === 0) {
             console.log(`No user found with ID ${id}.`);
-            throw new Error('User not found'); // Optionally, throw an error to indicate no user was found
+            throw new Error('User not found'); 
         }
 
         console.log(`User with ID ${id} deleted successfully.`);
     } catch (error) {
         console.error(`Error deleting user with ID ${id}:`, error);
-        throw new Error('Failed to delete user'); // Optionally, throw an error to be caught by the calling function
+        throw new Error('Failed to delete user'); 
     }
 };
 // const deleteUserDb = async(id) =>{
@@ -101,7 +97,7 @@ const updateUserDb = async (userID, { firstName, lastName, userAge, Gender, user
         console.log(`User with ID ${userID} updated successfully.`);
     } catch (error) {
         console.error(`Error updating user with ID ${userID}:`, error);
-        throw new Error('Failed to update user'); // Optionally, throw an error to be handled by the calling function
+        throw new Error('Failed to update user'); 
     }
 };
 
@@ -112,16 +108,13 @@ const deleteUserDbByEmail = async (emailAdd) => {
         const result = await pool.query('DELETE FROM users WHERE emailAdd = ?', [emailAdd]);
         if (result.affectedRows === 0) {
             console.log(`No user found with email ${emailAdd}.`);
-            throw new Error('User not found'); // Optionally, throw an error to indicate no user was found
+            throw new Error('User not found'); 
         }
         console.log(`User with email ${emailAdd} deleted successfully.`);
     } catch (error) {
         console.error(`Error deleting user with email ${emailAdd}:`, error);
-        throw new Error('Failed to delete user'); // Optionally, throw an error to be caught by the calling function
+        throw new Error('Failed to delete user');
     }
 };
 
-// console.log(await insertPeer('Matthew','23','purple','gatsby'))
-// console.log(await getUsersDb());
-// console.log(await getPeer(1));
 export {getUsersDb, getUserDb, insertUserDb, deleteUserDb, updateUserDb, loginUserDb, getUserDbByEmail, deleteUserDbByEmail}

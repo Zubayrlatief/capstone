@@ -9,9 +9,9 @@ const port = process.env.PORT || 5001;
 
 app.use(express.urlencoded({ extended: true }));
 
-// Use CORS middleware with options
+
 app.use(cors({
-  origin: 'http://localhost:8080', // Replace with the origin of your frontend
+  origin: 'http://localhost:8080', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

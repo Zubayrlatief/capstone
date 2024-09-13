@@ -1,8 +1,7 @@
-// cartController.js
 import { getItemsDb, insertItemDb, updateItemDb, deleteItemDb, clearCartDb } from '../model/cartDb.js';
 
 // Fetch all items in the cart
-export const fetchCart = async (req, res) => {
+ const fetchCart = async (req, res) => {
     try {
         const items = await getItemsDb();
         res.json(items);
@@ -13,10 +12,10 @@ export const fetchCart = async (req, res) => {
 };
 
 // Add an item to the cart
-export const addToCart = async (req, res) => {
+ const addToCart = async (req, res) => {
     const { userID, prodID, quantity, totalPrice } = req.body;
     
-    console.log('Request body:', req.body); // Log the request body to see what is being received
+    console.log('Request body:', req.body); 
 
     if (!userID || !prodID || !quantity || !totalPrice) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -33,7 +32,7 @@ export const addToCart = async (req, res) => {
 
 
 // Update an item in the cart
-export const updateCartItem = async (req, res) => {
+const updateCartItem = async (req, res) => {
     const { prodID } = req.params;
     const { quantity } = req.body;
 
@@ -55,7 +54,7 @@ export const updateCartItem = async (req, res) => {
 };
 
 // Delete an item from the cart
-export const deleteCartItem = async (req, res) => {
+ const deleteCartItem = async (req, res) => {
     const { prodID } = req.params;
     try {
         const affectedRows = await deleteItemDb(prodID);
@@ -71,7 +70,7 @@ export const deleteCartItem = async (req, res) => {
 };
 
 // Clear all items from the cart
-export const clearCart = async (req, res) => {
+const clearCart = async (req, res) => {
     try {
         const affectedRows = await clearCartDb();
         if (affectedRows > 0) {
@@ -84,3 +83,5 @@ export const clearCart = async (req, res) => {
         res.status(500).json({ error: 'Failed to clear cart' });
     }
 };
+
+export {fetchCart, addToCart, updateCartItem, deleteCartItem, clearCart};

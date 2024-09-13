@@ -1,4 +1,3 @@
-// authenticate.js
 import { compare } from "bcrypt";
 import { loginUserDb } from "../model/usersDb.js";
 import jwt from "jsonwebtoken";
@@ -19,14 +18,11 @@ const checkUser = async (req, res, next) => {
         const hashedPassword = user.userPass;
         console.log("Hashed Password:", hashedPassword);
 
-        // Compare the provided password with the hashed password
         const isMatch = await compare(userPass, hashedPassword);
         
         if (isMatch) {
-            // Generate JWT token
             const token = jwt.sign({ id: user.id, emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
             console.log("Token:", token);
-            // Send the token to the client
             res.status(200).json({ token });
         } else {
             res.status(401).send('Incorrect password');
