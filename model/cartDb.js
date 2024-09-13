@@ -1,4 +1,3 @@
-// cartDb.js
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
 
@@ -22,20 +21,6 @@ const getItemsDb = async () => {
     }
 };
 
-// Get a single item by product ID
-const getItemDb = async (prodID) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM cart WHERE prodID = ?', [prodID]);
-        if (rows.length === 0) {
-            return null;
-        }
-        return rows[0];
-    } catch (error) {
-        console.error(`Error fetching item with product ID ${prodID} from cart:`, error);
-        throw new Error('Failed to fetch the item from the cart.');
-    }
-};
-
 // Insert a new item into the cart
 const insertItemDb = async (userID, prodID, quantity, totalPrice) => {
     try {
@@ -48,6 +33,25 @@ const insertItemDb = async (userID, prodID, quantity, totalPrice) => {
     } catch (error) {
         console.error('Error inserting item into cart:', error);
         throw new Error('Failed to insert item into the cart.');
+    }
+};
+
+// Update an item in the cart by product ID
+const updateItemDb = async (quantity, prodID) => {
+    try {
+        const [result] = await pool.query(
+            'UPDATE cart SET quantity = ? WHERE prodID = ?',
+            [quantity, prodID]
+        );
+        if (result.affectedRows === 0) {
+            console.log(`No item updated for product ID ${prodID}. The item may not exist.`);
+            return { affectedRows: 0 };
+        }
+        console.log('Item updated successfully.');
+        return result;
+    } catch (error) {
+        console.error(`Error updating item with product ID ${prodID}:`, error);
+        throw new Error('Failed to update item in the cart.');
     }
 };
 
@@ -83,26 +87,4 @@ const clearCartDb = async () => {
     }
 };
 
-// Update an item in the cart
-const updateItemDb = async (quantity, prodID) => {
-    try {
-        const [result] = await pool.query(
-            'UPDATE cart SET quantity = ? WHERE prodID = ?',
-            [quantity, prodID]
-        );
-        if (result.affectedRows === 0) {
-            console.log(`No item updated for product ID ${prodID}. The item may not exist.`);
-            return { affectedRows: 0 };
-        }
-
-        console.log('Item updated successfully.');
-        return result;
-    } catch (error) {
-        console.error(`Error updating item with product ID ${prodID}:`, error);
-        throw new Error('Failed to update item in the cart.');
-    }
-};
-
-// Export functions
-export { getItemsDb, getItemDb, insertItemDb, deleteItemDb, clearCartDb, updateItemDb };
-
+export { getItemsDb, insertItemDb, updateItemDb, deleteItemDb, clearCartDb };
