@@ -1,50 +1,53 @@
 <template>
-    <NavBar />
-    <div v-if="itemDetail">
-      <h1>{{ itemDetail.prodName }}</h1>
-      <p>{{ itemDetail.description }}</p>
-      <!-- Other item details -->
+    <NavBar/>
+    <div class="item-detail">
+      <h1>Item Detail</h1>
+  
+      <!-- Check if itemDetail exists -->
+      <div v-if="itemDetail">
+        <!-- Use ItemCard to display the detailed view of the item -->
+        <ItemCard :item="itemDetail" />
+      </div>
+  
+      <div v-else>
+        <p>Loading item details...</p>
+      </div>
     </div>
-    <div v-else>
-      <p>Loading...</p>
-    </div>
-    <FooterComp />
+    <FooterComp/>
   </template>
   
   <script>
   import FooterComp from '@/components/FooterComp.vue';
-  import NavBar from '@/components/NavBar.vue';
-  import { mapActions, mapGetters } from 'vuex';
+import ItemCard from '@/components/ItemCard.vue';
+import NavBar from '@/components/NavBar.vue';
+  import { mapActions, mapState } from 'vuex';
   
   export default {
-    components: {
-      NavBar,
-      FooterComp
-    },
     name: 'ItemDetail',
-    props: {
-      id: {
-        type: String,
-        required: true
-      }
+    components: {
+      ItemCard,
+      NavBar,
+      FooterComp // Register ItemCard component
     },
     computed: {
-      ...mapGetters(['itemDetail']),
-    },
-    async created() {
-      if (this.id) {
-        try {
-          await this.fetchItem(this.id);
-        } catch (error) {
-          console.error('Error fetching item details:', error);
-        }
-      } else {
-        console.error('No item ID provided');
-      }
+      ...mapState(['itemDetail']) // Map itemDetail from Vuex store
     },
     methods: {
       ...mapActions(['fetchItem']),
     },
+    created() {
+      // Fetch item details when the component is created
+      const itemID = this.$route.params.id; // Get item ID from route
+      this.fetchItem(itemID);
+    }
   };
   </script>
+  
+  <style scoped>
+  .item-detail {
+    padding: 20px;
+    background-color: #361c1c;
+    color: white;
+  }
+  </style>
   
