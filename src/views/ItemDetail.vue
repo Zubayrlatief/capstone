@@ -1,9 +1,13 @@
 <template>
+  <div>
+
+  
     <div v-if="item" class="item-detail">
       <h1>{{ item.prodName }}</h1>
       <img :src="item.prodURL" alt="Product Image" />
       <p>{{ item.description }}</p>
       <p>Price: {{ item.amount }}</p>
+    </div>
   <div>
 
   
@@ -23,6 +27,7 @@
     </div>
     <FooterComp/>
   </div>
+</div>
   </template>
   
   <script>
