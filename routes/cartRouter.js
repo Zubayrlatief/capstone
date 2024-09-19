@@ -1,22 +1,21 @@
-// cartRouter.js
 import express from 'express';
 import { fetchCart, addToCart, updateCartItem, deleteCartItem, clearCart } from '../controller/cartController.js';
 
 const router = express.Router();
 
-// FETCH CART - Get all items in the cart
+// FETCH CART
 router.get('/cart', fetchCart);
 
-// ADD TO CART - Add an item to the cart
+// ADD TO CART 
 router.post('/cart', addToCart);
 
-// UPDATE CART ITEM - Update quantity of an item in the cart
+// UPDATE CART ITEM
 router.put('/cart/:prodID', updateCartItem);
 
-// DELETE CART ITEM - Remove an item from the cart
+// DELETE CART ITEM 
 router.delete('/cart/:prodID', deleteCartItem);
 
-// CLEAR CART - Remove all items from the cart
+// CLEAR CART 
 router.delete('/cart', clearCart);
 
 export default router;

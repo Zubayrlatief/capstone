@@ -21,7 +21,7 @@ const getItemsDb = async () => {
     }
 };
 
-// Insert a new item into the cart
+// Insert a new item into cart
 const insertItemDb = async (userID, prodID, quantity, totalPrice) => {
     try {
         const [result] = await pool.query(
@@ -36,7 +36,7 @@ const insertItemDb = async (userID, prodID, quantity, totalPrice) => {
     }
 };
 
-// Update an item in the cart by product ID
+// Update an item in the cart 
 const updateItemDb = async (quantity, prodID) => {
     try {
         const [result] = await pool.query(
@@ -55,7 +55,7 @@ const updateItemDb = async (quantity, prodID) => {
     }
 };
 
-// Delete an item from the cart by product ID
+// Delete an item from the cart
 const deleteItemDb = async (prodID) => {
     try {
         const [result] = await pool.query(
@@ -80,7 +80,7 @@ const deleteItemDb = async (prodID) => {
 const clearCartDb = async () => {
     try {
         const [result] = await pool.query('DELETE FROM cart');
-        return result.affectedRows; // Return number of affected rows
+        return result.affectedRows; 
     } catch (error) {
         console.error('Error clearing cart:', error);
         throw error;

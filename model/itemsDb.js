@@ -20,12 +20,12 @@ const getItemDb = async (prodID) => {
     try {
         const result = await pool.query('SELECT * FROM items WHERE prodID = ?', [prodID]);
         if (result.length === 0) {
-            return null; // No item found
+            return null; 
         }
-        return result[0]; // Return the item object
+        return result[0]; 
     } catch (error) {
         console.error('Error fetching item:', error);
-        throw error; // Propagate error to be handled by caller
+        throw error; r
     }
 };
 
