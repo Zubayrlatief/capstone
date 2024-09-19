@@ -50,7 +50,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
-      this.$router.push('/login'); // Redirect to login page
+      this.$router.push('/login');
     }
   }
 };

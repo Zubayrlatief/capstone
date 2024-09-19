@@ -108,7 +108,7 @@ export default {
         });
         this.message = response.data.message;
         this.success = true;
-        // Redirect to login page after successful registration
+        //  REDIRECT TO LOHIN
         setTimeout(() => {
           this.$router.push('/login');
         }, 2000);
@@ -127,16 +127,16 @@ export default {
 
 .form-control {
   color: white;
-  background-color: #343a40; /* Optional: dark background for better readability */
-  border-color: #495057; /* Optional: matching border color */
+  background-color: #343a40; 
+  border-color: #495057; 
 }
 
 .form-control::placeholder {
-  color: #6c757d; /* Optional: placeholder text color */
+  color: #6c757d; 
 }
 
 .btn-primary {
-  background-color: #007bff; /* Bootstrap's default primary color */
+  background-color: #007bff; 
   border-color: #007bff;
 }
 

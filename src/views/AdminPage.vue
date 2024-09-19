@@ -31,7 +31,6 @@
           </tr>
         </tbody>
       </table>
-      <!-- Add/Edit Item Form -->
       <div v-if="currentItem !== null" class="mt-4">
         <h2>{{ currentItem.prodID ? 'Edit Item' : 'Add Item' }}</h2>
         <form @submit.prevent="saveItem">
@@ -81,7 +80,7 @@ export default {
   data() {
   return {
     items: [],
-    currentItem: { prodID: null, prodName: '', quantity: '', amount: '', description: '', category: '', prodURL: '' }, // Initialize with default values
+    currentItem: { prodID: null, prodName: '', quantity: '', amount: '', description: '', category: '', prodURL: '' },
   };
 },
   methods: {
@@ -119,7 +118,7 @@ export default {
 
 async saveItem() {
   try {
-    console.log('Saving item:', this.currentItem); // Add this line to debug
+    console.log('Saving item:', this.currentItem); 
 
     if (this.currentItem.prodID) {
       // Update existing item

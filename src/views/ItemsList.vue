@@ -2,10 +2,7 @@
   <div>
   <NavBar/>
   <div class="items-list">
-    
     <h1>Item List</h1>
-
-    <!-- Sorting Dropdown -->
     <div class="sorting-container">
       <label for="sortOrder">Sort by Price: </label>
       <select id="sortOrder" v-model="sortOrder" @change="sortItems">
@@ -13,18 +10,9 @@
         <option value="desc">High to Low</option>
       </select>
     </div>
-
-    <!-- Search Input -->
     <div class="search-container">
-      <input
-        type="text"
-        placeholder="Search items by name..."
-        v-model="searchQuery"
-        @input="filterItems"
-      />
+      <input type="text" placeholder="Search items by name..." v-model="searchQuery" @input="filterItems" />
     </div>
-
-    <!-- Loading Spinner -->
     <div v-if="loading" class="loading-container">
       <LoadingSpinner />
     </div>
@@ -89,6 +77,9 @@ export default {
     },
     items() {
       return this.allItems;
+    },
+    userID() {
+      return this.$store.state.user.userID;
     }
   },
   methods: {
@@ -103,25 +94,24 @@ export default {
       }
     },
     sortItems() {
-      // Sorting is handled reactively by computed property sortedItems
     },
     filterItems() {
-      // Filtering is handled reactively by computed property filteredItems
     },
     async handleAddToCart(item) {
-      // Inspect the item object
+      // Check the item object to ensure it has the required fields
       console.log('Item to add:', item);
 
       const token = localStorage.getItem('token');
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
 
+      // Ensure all required fields are present
       const cartItem = {
-        userID: this.userID, // Ensure this is correctly defined
+        userID: this.userID, // Ensure this is correctly defined and available
         prodID: item.prodID,
         quantity: item.quantity || 1, // Default to 1 if quantity is not provided
-        totalPrice: item.amount || 0 // Default to 0 if amount is not provided
+        totalPrice: item.amount * (item.quantity || 1) // Calculate total price
       };
 
       console.log('Formatted cartItem:', cartItem);
@@ -129,10 +119,12 @@ if (token) {
       try {
         await this.$store.dispatch('addToCart', cartItem);
       } catch (error) {
-        console.error('Error adding item to cart:', error);
+        console.error('Error adding item to cart:', error.response ? error.response.data : error.message);
       }
     }
+
   },
+
   created() {
     this.loadItems();
   }
@@ -142,11 +134,12 @@ if (token) {
 <style scoped>
 .items-list {
   padding: 20px;
-  background-color: #361c1c; /* Updated background color */
-  color: white; /* Ensures text is readable */
+  background-color: #361c1c;
+  color: white;
 }
 
-.sorting-container, .search-container {
+.sorting-container,
+.search-container {
   margin-bottom: 20px;
   text-align: center;
 }
@@ -158,7 +151,7 @@ if (token) {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fff; /* Background color for input */
+  background-color: #fff;
 }
 
 .items-grid {
@@ -168,11 +161,12 @@ if (token) {
   justify-content: center;
 }
 
-.items-grid > * {
+.items-grid>* {
   flex: 1 1 300px;
 }
 
-h1, h3 {
+h1,
+h3 {
   text-align: center;
 }
 </style>

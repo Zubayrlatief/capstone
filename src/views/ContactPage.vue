@@ -68,7 +68,7 @@
           this.errorMessage = '';
           this.successMessage = '';
   
-          // Validate form data
+          // VALIDATE
           if (!this.form.name || !this.form.email || !this.form.message) {
             this.errorMessage = 'All fields are required.';
             return;

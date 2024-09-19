@@ -144,10 +144,10 @@ color: white;
 }
 
 .alert-success {
-background-color: #28a745; /* Success alert background */
+background-color: #28a745;
 }
 
 .alert-danger {
-background-color: #dc3545; /* Danger alert background */
+background-color: #dc3545; 
 }
 </style>

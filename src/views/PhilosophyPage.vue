@@ -3,12 +3,10 @@
       <NavBar/>
       <div class="container mt-5">
         <div class="row">
-          <!-- Image Column -->
           <div class="col-md-6 d-flex justify-content-center align-items-center">
             <img src="https://zubayrlatief.github.io/capestone-hosted-images/landingpic.png" class="img-fluid rounded" alt="About Image">
           </div>
-    
-          <!-- Text Column -->
+
           <div class="col-md-6">
             <h2 class="text-center">PHILOSOPHY</h2>
             <h5 class="text-center">Our Mission at Hermess Fitness</h5>
@@ -44,9 +42,9 @@
   
   <style scoped>
   .page-container {
-    background-color: #361c1c; /* Dark red background */
-    color: #fff; /* White text color */
-    min-height: 100vh; /* Full viewport height */
+    background-color: #361c1c; 
+    color: #fff; 
+    min-height: 100vh; 
   }
   
   .container {
@@ -58,7 +56,7 @@
   }
   
   h2, h5, p {
-    color: #000000; /* White text color */
+    color: #000000; 
   }
   
   h2 {
@@ -82,13 +80,13 @@
   }
   
   .btn-light {
-    background-color: #fff; /* White button background */
-    color: #4c0000; /* Dark red text color */
-    border: none; /* Remove border */
+    background-color: #fff;
+    color: #4c0000; 
+    border: none; 
   }
   
   .btn-light:hover {
-    background-color: #f8f9fa; /* Slightly lighter background on hover */
+    background-color: #f8f9fa; 
   }
   </style>
   

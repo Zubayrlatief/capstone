@@ -1,5 +1,5 @@
 <template>
-  <NavBar/>
+  <NavBar />
   <div class="checkout container">
     <h2>Checkout</h2>
     <div v-if="cartItems.length">
@@ -15,7 +15,7 @@
       <p>Your cart is empty!</p>
     </div>
   </div>
-  <FooterComp/>
+  <FooterComp />
 </template>
 
 <script>
@@ -32,10 +32,13 @@ export default {
     ...mapGetters(['cartItems', 'cartTotal'])
   },
   methods: {
-    completeCheckout() {
-      // Logic to complete the purchase
-      alert('Purchase completed!');
-      this.clearCart();
+    async completeCheckout() {
+      try {
+        await this.$store.dispatch('clearCart');
+        alert('Purchase completed!');
+      } catch (error) {
+        console.error('Error completing purchase:', error);
+      }
     },
     ...mapActions(['clearCart'])
   }

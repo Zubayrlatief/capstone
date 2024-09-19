@@ -40,15 +40,15 @@ html, body {
 }
 
 .container {
-  background-color: #361c1c; /* Updated background color */
+  background-color: #361c1c; 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 100vh; /* Full viewport height */
-  box-sizing: border-box; /* Include padding in width and height */
-  text-align: center; /* Center align text */
+  height: 100vh; 
+  box-sizing: border-box; 
+  text-align: center; 
 }
 
 .container img {
