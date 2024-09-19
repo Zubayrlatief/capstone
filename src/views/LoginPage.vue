@@ -33,7 +33,8 @@
       </div>
     </div>
   </div>
-  <FooterComp />
+  <FooterComp/>
+  
 </template>
 
 <script>

@@ -58,29 +58,29 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color: black; /* Fully black background */
+  background-color: black;
 }
 
 .navbar-brand, .nav-link {
-  color: white !important; /* Ensuring the text is visible against the black background */
-  text-decoration: none; /* Remove underline from links */
+  color: white !important; 
+  text-decoration: none; 
 }
 
 .navbar-logo {
-  max-height: 50px; /* Adjust the height of the logo */
-  max-width: 100px; /* Adjust the width of the logo */
-  object-fit: contain; /* Ensure the image fits nicely within the dimensions */
+  max-height: 50px;
+  max-width: 100px;
+  object-fit: contain; 
 }
 
 .user-image {
-  max-height: 40px; /* Adjust the height of the user's image */
-  border-radius: 50%; /* Optional: Make it a circle */
-  margin-right: 10px; /* Space between image and logout button */
-  cursor: pointer; /* Indicate that the image is clickable */
+  max-height: 40px;
+  border-radius: 50%;
+  margin-right: 10px; 
+  cursor: pointer;
 }
 
 .container {
-  max-width: 1200px; /* Optional: Limit container width */
+  max-width: 1200px; 
 }
 
 .d-flex {
@@ -98,20 +98,20 @@ export default {
 }
 
 .nav-item {
-  margin: 0 15px; /* Adjust spacing between nav items for better visual separation */
-  position: relative; /* Ensure the pseudo-element is positioned correctly */
+  margin: 0 15px; 
+  position: relative;
 }
 
 .nav-link {
   position: relative;
   display: inline-block;
   padding: 10px;
-  transition: color 0.3s, background-color 0.3s; /* Smooth transition for color and background */
+  transition: color 0.3s, background-color 0.3s;
 }
 
 .nav-link:hover {
-  color: #ff6347; /* Change text color on hover */
-  background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
-  border-radius: 4px; /* Optional: Add rounded corners */
+  color: #ff6347; 
+  background-color: rgba(255, 255, 255, 0.2); 
+  border-radius: 4px; 
 }
 </style>

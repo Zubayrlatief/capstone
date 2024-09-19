@@ -23,11 +23,8 @@
               <button class="btn btn-primary" @click="deleteAccount">Delete Account</button>
             </div>
           </div>
-
-          <!-- Link to View Cart -->
           <router-link to="/cart" class="btn btn-secondary">View Cart</router-link>
           
-          <!-- Link to Admin Page -->
           <router-link to="/admin" class="btn btn-secondary mt-2">Admin Page</router-link>
         </div>
 
@@ -54,7 +51,6 @@
               <label for="gender" class="form-label">Gender</label>
               <input type="text" v-model="user.Gender" class="form-control" required />
             </div>
-            <!-- Add other fields as necessary -->
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
         </div>
@@ -104,10 +100,8 @@ async created() {
 },
 methods: {
   async updateAccount() {
-    // Your update logic here
   },
   async deleteAccount() {
-    // Your delete logic here
   }
 },
 };
@@ -116,37 +110,37 @@ methods: {
 <style scoped>
 .container {
 max-width: 500px;
-background-color: #361c1c; /* Background color of the container */
+background-color: #361c1c;
 padding: 95px;
-border-radius: 8px; /* Rounded corners for the container */
+border-radius: 8px;
 }
 
 h2 {
-color: white; /* Text color for the heading */
+color: white; 
 }
 
 .form-label {
-color: white; /* Label text color */
+color: white; 
 }
 
 .form-control {
-background-color: #4e2b2b; /* Input background color */
-color: white; /* Input text color */
-border: 1px solid #6e4c4c; /* Input border color */
+background-color: #4e2b2b;
+color: white; 
+border: 1px solid #6e4c4c; 
 }
 
 .btn-primary {
-background-color: #f39c12; /* Button background color */
-border: none; /* Remove button border */
+background-color: #f39c12; 
+border: none;
 }
 
 .btn-primary:hover {
-background-color: #e67e22; /* Button hover color */
+background-color: #e67e22; 
 }
 
 .alert {
 padding: 15px;
-color: white; /* Text color in the alert box */
+color: white;
 }
 
 .alert-success {

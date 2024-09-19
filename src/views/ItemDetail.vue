@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+  
     <NavBar/>
     <div class="item-detail">
       <h1>Item Detail</h1>
@@ -14,6 +17,7 @@
       </div>
     </div>
     <FooterComp/>
+  </div>
   </template>
   
   <script>

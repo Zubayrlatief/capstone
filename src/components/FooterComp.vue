@@ -1,7 +1,7 @@
 <template>
   <footer class="container-fluid py-3 text-light">
     <div class="row d-flex justify-content-center align-items-center">
-      <!-- Logo Column -->
+
       <div class="col-lg-4 d-flex justify-content-center align-items-center">
         <a href="/" class="d-flex align-items-center text-light text-decoration-none">
           <img
@@ -14,7 +14,6 @@
         </a>
       </div>
       
-      <!-- Contact and Social Media Column -->
       <div class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
         <a href="/contact" class="text-light mb-2">
           <i class="bi bi-envelope-fill" style="font-size: 1.5rem;"></i>
@@ -29,7 +28,6 @@
         </div>
       </div>
       
-      <!-- Copyright Column -->
       <div class="col-lg-4 text-center text-muted">
         &copy; {{ new Date().getFullYear() }} HERMESS FITNESS.
       </div>
@@ -62,11 +60,11 @@ footer {
 
 @media (max-width: 768px) {
   .h4 {
-    font-size: 1.2rem; /* Adjust font size for smaller screens */
+    font-size: 1.2rem; 
   }
 
   .ms-2 {
-    margin-left: 0.5rem; /* Adjust spacing on smaller screens */
+    margin-left: 0.5rem; 
   }
 }
 </style>
