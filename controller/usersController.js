@@ -26,7 +26,12 @@ const getUser = async (req, res) => {
 // Register a  user
 const insertUser = async (req, res) => {
     try {
-        const { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile } = req.body;
+        const { firstName, lastName, emailAdd, userPass } = req.body;
+
+        // Check if userPass is provided
+        if (!userPass) {
+            return res.status(400).json({ message: 'Password is required' });
+        }
 
         const userExists = await getUserDbByEmail(emailAdd);
         if (userExists) {
@@ -35,7 +40,7 @@ const insertUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(userPass, 10);
-        await insertUserDb(firstName, lastName, userAge, Gender, userRole, emailAdd, hashedPassword, userProfile);
+        await insertUserDb(firstName, lastName, emailAdd, hashedPassword);
         res.status(200).json({ message: 'Registration successful' });
     } catch (error) {
         console.error('Error registering user:', error.message);
@@ -53,7 +58,7 @@ const deleteUser = async(req,res)=>{
 // Update
 const updateUser = async (req, res) => {
     try {
-        const { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile } = req.body;
+        const { firstName, lastName, emailAdd, userPass} = req.body;
         const userID = req.params.id; 
 
         const existingUser = await getUserDb(userID);
@@ -64,11 +69,7 @@ const updateUser = async (req, res) => {
         const updatedUser = {
             firstName: firstName || existingUser.firstName,
             lastName: lastName || existingUser.lastName,
-            userAge: userAge || existingUser.userAge,
-            Gender: Gender || existingUser.Gender,
-            userRole: userRole || existingUser.userRole,
             emailAdd: emailAdd || existingUser.emailAdd,
-            userProfile: userProfile || existingUser.userProfile
         };
         if (userPass) {
             updatedUser.userPass = await bcrypt.hash(userPass, 10);

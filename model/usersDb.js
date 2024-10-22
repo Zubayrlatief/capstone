@@ -31,12 +31,12 @@ const loginUserDb = async (emailAdd) => {
 
 
 // Insert new user into the database during registration
-const insertUserDb = async (firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile) => {
+const insertUserDb = async (firstName, lastName, emailAdd, userPass) => {
     try {
         await pool.query(`
-            INSERT INTO users (firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile]);
+            INSERT INTO users (firstName, lastName, emailAdd, userPass)
+            VALUES (?, ?, ?, ?)
+        `, [firstName, lastName, emailAdd, userPass]);
         console.log("User inserted successfully.");
     } catch (error) {
         console.error("Error inserting user into the database:", error);
@@ -79,20 +79,16 @@ const deleteUserDb = async (id) => {
 // }
 
 //update
-const updateUserDb = async (userID, { firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile }) => {
+const updateUserDb = async (userID, { firstName, lastName, emailAdd, userPass }) => {
     try {
         await pool.query(`
             UPDATE users
             SET firstName = ?,
                 lastName = ?,
-                userAge = ?,
-                Gender = ?,
-                userRole = ?,
                 emailAdd = ?,
                 userPass = ?,
-                userProfile = ?
             WHERE userID = ?`,
-            [firstName, lastName, userAge, Gender, userRole, emailAdd, userPass, userProfile, userID]
+            [firstName, lastName, emailAdd, userPass, userID]
         );
         console.log(`User with ID ${userID} updated successfully.`);
     } catch (error) {
