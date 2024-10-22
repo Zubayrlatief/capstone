@@ -3,15 +3,8 @@
     <img :src="item.prodURL" alt="Item Image" />
     <h2>{{ item.prodName }}</h2>
     <p>{{ formatAmount(item.amount) }}</p>
-    <button @click.stop="addToCart(item)">
-      Add to Cart
-    </button>
-    <button @click.stop="viewItemDetails(item.prodID)">
-      View Item
-    </button>
-    <p v-if="!isAuthenticated" class="auth-message">
-      Please sign in to add items to your cart.
-    </p>
+    <button @click.stop="addToCart(item)">Add to Cart</button>
+    <button @click="viewItemDetails(item.prodID)">View Item</button>
   </div>
 </template>
 
@@ -21,35 +14,26 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true
-    }
-  },
-  computed: {
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;
-    }
+      required: true,
+    },
   },
   methods: {
     formatAmount(amount) {
-      if (typeof amount === 'number') {
-        return amount.toFixed(2);
-      } else if (typeof amount === 'string') {
-        return Number(amount).toFixed(2);
-      }
-      return 'N/A';
+      return typeof amount === 'number'
+        ? amount.toFixed(2)
+        : Number(amount).toFixed(2);
     },
     addToCart(item) {
-      console.log('Item to add:', item);
-      if (this.isAuthenticated) {
-        this.$emit('add-to-cart', item);
+      if (this.$store.getters.isAuthenticated) {
+        this.$store.dispatch('addToCart', item);
       } else {
         alert('Please sign in to add items to your cart.');
       }
     },
     viewItemDetails(prodID) {
       this.$router.push(`/items/${prodID}`);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -69,9 +53,4 @@ export default {
 .item-card button {
   margin-top: 10px;
 }
-.auth-message {
-  color: red;
-  font-size: 0.9em;
-}
 </style>
-

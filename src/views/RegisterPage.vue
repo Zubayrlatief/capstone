@@ -16,33 +16,6 @@
       </div>
 
       <div class="form-group mb-3">
-        <label for="userAge">Age</label>
-        <input type="number" v-model="userAge" id="userAge" class="form-control" required />
-        <div class="invalid-feedback">Please enter your age.</div>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="gender">Gender</label>
-        <select v-model="Gender" id="gender" class="form-control" required>
-          <option value="" disabled>Select your gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <div class="invalid-feedback">Please select your gender.</div>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="userRole">Role</label>
-        <select v-model="userRole" id="userRole" class="form-control" required>
-          <option value="" disabled>Select your role</option>
-          <option value="User">User</option>
-          <option value="Admin">Admin</option>
-        </select>
-        <div class="invalid-feedback">Please select your role.</div>
-      </div>
-
-      <div class="form-group mb-3">
         <label for="emailAdd">Email</label>
         <input type="email" v-model="emailAdd" id="emailAdd" class="form-control" required />
         <div class="invalid-feedback">Please enter a valid email address.</div>
@@ -53,12 +26,6 @@
         <input type="password" v-model="userPass" id="userPass" class="form-control" required />
         <div class="invalid-feedback">Please enter a password.</div>
       </div>
-
-      <div class="form-group mb-3">
-        <label for="userProfile">Profile URL</label>
-        <input type="text" v-model="userProfile" id="userProfile" class="form-control" />
-      </div>
-
       <button type="submit" class="btn btn-primary w-100">Register</button>
 
       <div v-if="message" class="alert mt-3" :class="{'alert-success': success, 'alert-danger': !success}">
