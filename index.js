@@ -7,7 +7,7 @@ import cartRouter from './routes/cartRouter.js';
 const app = express();
 const port = process.env.PORT || 5001;
 
-const allowedOrigins = ['http://localhost:8081', 'https://capstone-965d2.web.app'];
+const allowedOrigins = ['http://localhost:8081', 'https://capstone-965d2.web.app', 'http://localhost:8080'];
 
 app.use(cors({
   // origin: function (origin, callback) {
