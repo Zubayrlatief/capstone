@@ -90,6 +90,7 @@ export default {
 <style scoped>
 .container {
   max-width: 500px;
+  height: 70vh;
 }
 
 .form-control {
