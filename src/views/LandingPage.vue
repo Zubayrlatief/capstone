@@ -94,6 +94,24 @@ body {
   padding: 0.2rem;
 }
 
+#bottone1 {
+  background-color: #fff; /* White background */
+  color: #4c0000; /* Dark red text */
+  padding: 0.75rem 1.5rem; /* Adjusted padding */
+  font-size: 1rem; /* Standard font size */
+  border-radius: 0.5rem; /* Rounded corners */
+  border: none; /* Remove border */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+
+  margin-top: 30px;
+}
+
+#bottone1:hover {
+  background-color: #f8f9fa; /* Lighter background on hover */
+  color: #6c0000; /* Slightly darker red on hover */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
 @media (max-width: 768px) {
   /* Adjust container width and padding for a perfect fit */
   .container{
@@ -147,9 +165,10 @@ body {
   }
 
   #bottone1 {
-    width: 90%;
+    width: 60%;
     padding: 12px;
     font-size: 16px;
+
   }
 
   .text-container {

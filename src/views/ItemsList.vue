@@ -134,7 +134,7 @@ export default {
 <style scoped>
 .items-list {
   padding: 20px;
-  background-color: #361c1c;
+  background-color: black;
   color: white;
 }
 

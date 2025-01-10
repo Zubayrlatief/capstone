@@ -87,6 +87,7 @@ export default {
 .container {
   max-width: 500px;
   background-color: black; 
+  height: 67vh;
   padding: 95px;
   border-radius: 8px; 
 }

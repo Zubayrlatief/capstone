@@ -85,6 +85,9 @@ export default {
 </script>
 <style scoped>
 .cart{
-  height: 65vh;
+  height: 67vh;
+}
+.text-center{
+  color: white;
 }
 </style>
