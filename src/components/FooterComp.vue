@@ -1,22 +1,22 @@
 <template>
   <footer class="container-fluid py-3 text-light">
-    <div class="row d-flex justify-content-center align-items-center">
+    <div class="row d-flex justify-content-center align-items-center text-center">
 
-      <div class="col-lg-4 d-flex justify-content-center align-items-center">
-        <a href="/" class="d-flex align-items-center text-light text-decoration-none">
+      <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-center align-items-center mb-3 mb-lg-0">
+        <a href="/" class="d-flex flex-column align-items-center text-light text-decoration-none">
           <img
             src="https://zubayrlatief.github.io/capestone-hosted-images/H (1)(2).jpg"
             alt="Company Logo"
             title="Company Logo"
-            class="img"
+            class="img mb-2"
           />
-          <span class="h4 mb-0 ms-2">HERMESS FITNESS</span>
+          <span class="h4 mb-0">HERMESS FITNESS</span>
         </a>
       </div>
       
-      <div class="col-lg-4 d-flex flex-column justify-content-center align-items-center">
+      <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-center align-items-center mb-3 mb-lg-0">
         <a href="/contact" class="text-light mb-2">
-          <i class="bi bi-envelope-fill" style="font-size: 1.5rem;"></i>
+          <i class="bi bi-envelope-fill"></i>
         </a>
         <div class="d-flex gap-3">
           <a href="https://www.instagram.com" target="_blank" class="text-light">
@@ -28,7 +28,7 @@
         </div>
       </div>
       
-      <div class="col-lg-4 text-center text-muted">
+      <div class="col-lg-4 col-md-12 text-center text-muted">
         &copy; {{ new Date().getFullYear() }} HERMESS FITNESS.
       </div>
     </div>
@@ -45,6 +45,9 @@ export default {
 .img {
   height: 50px;
 }
+.row{
+    width: 100%;   
+  }
 
 .container-fluid {
   background-color: black;
@@ -66,5 +69,36 @@ footer {
   .ms-2 {
     margin-left: 0.5rem; 
   }
+
+  .img {
+    height: 40px; 
+  }
+  
+  .bi-envelope-fill, .bi-instagram, .bi-tiktok {
+    font-size: 1.3rem; 
+  }
+
+  .gap-3 {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .h4 {
+    font-size: 1rem; 
+  }
+
+  .img {
+    height: 35px; 
+  }
+
+  .bi-envelope-fill, .bi-instagram, .bi-tiktok {
+    font-size: 1.2rem; 
+  }
+
+  .gap-3 {
+    gap: 0.8rem;
+  }
+  
 }
 </style>

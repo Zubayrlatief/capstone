@@ -1,18 +1,31 @@
 <template>
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-black">
     <div class="container">
-      <div class="d-flex w-100 justify-content-between align-items-center">
-        <div class="d-flex">
+      <!-- Brand Logo -->
+      <a class="navbar-brand" href="/">
+        <img src="https://zubayrlatief.github.io/capestone-hosted-images/H (1)(2).jpg" alt="Brand Logo" class="navbar-logo">
+      </a>
+
+      <!-- Toggler Button for Burger Menu -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        @click="toggleMenu"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Collapsible Menu -->
+      <div :class="['collapse', 'navbar-collapse', { show: isMenuOpen }]" id="navbarContent">
+        <div class="navbar-nav ms-auto">
           <a class="nav-item nav-link" href="/philosophy">Philosophy</a>
           <a class="nav-item nav-link" href="/items">Store</a>
           <template v-if="isAdmin">
             <a class="nav-item nav-link" href="/admin">Admin</a>
           </template>
-        </div>
-        <a class="navbar-brand mx-auto" href="/">
-          <img src="https://zubayrlatief.github.io/capestone-hosted-images/H (1)(2).jpg" alt="Brand Logo" class="navbar-logo">
-        </a>
-        <div class="d-flex">
           <a class="nav-item nav-link" href="/cart">Cart</a>
           <template v-if="!isLoggedIn">
             <a class="nav-item nav-link" href="/register">Sign Up</a>
@@ -35,19 +48,27 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'NavBar',
+  data() {
+    return {
+      isMenuOpen: false,
+    };
+  },
   computed: {
     ...mapGetters(['isAuthenticated', 'isAdmin']),
-  isLoggedIn() {
-    return this.isAuthenticated;
+    isLoggedIn() {
+      return this.isAuthenticated;
+    },
+    userImage() {
+      return this.isLoggedIn ? 'https://zubayrlatief.github.io/capestone-hosted-images/logo.png' : '';
+    },
+    accountPageUrl() {
+      return '/account';
+    }
   },
-  userImage() {
-    return this.isLoggedIn ? 'https://zubayrlatief.github.io/capestone-hosted-images/logo.png' : '';
-  },
-  accountPageUrl() {
-    return '/account';
-  }
-},
   methods: {
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
     logout() {
       this.$store.dispatch('logout');
       this.$router.push('/login');
@@ -61,57 +82,42 @@ export default {
   background-color: black;
 }
 
-.navbar-brand, .nav-link {
-  color: white !important; 
-  text-decoration: none; 
+.navbar-brand,
+.nav-link {
+  color: white;
+  font-size: large;
+  font-family: "Pirata One", system-ui;
+  text-shadow: 6px 6px 4px rgba(0, 0, 0, 0.8);
 }
 
 .navbar-logo {
   max-height: 50px;
-  max-width: 100px;
-  object-fit: contain; 
+  object-fit: contain;
 }
 
 .user-image {
   max-height: 40px;
   border-radius: 50%;
-  margin-right: 10px; 
+  margin-right: 10px;
   cursor: pointer;
 }
 
-.container {
-  max-width: 1200px; 
+.navbar-toggler {
+  border: none;
 }
 
-.d-flex {
-  display: flex;
-  align-items: center;
+.collapse.show {
+  display: block !important;
 }
 
-.w-100 {
-  width: 100%;
-}
+@media (max-width: 480px) {
+  .navbar-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.nav-item {
-  margin: 0 15px; 
-  position: relative;
-}
-
-.nav-link {
-  position: relative;
-  display: inline-block;
-  padding: 10px;
-  transition: color 0.3s, background-color 0.3s;
-}
-
-.nav-link:hover {
-  color: #ff6347; 
-  background-color: rgba(255, 255, 255, 0.2); 
-  border-radius: 4px; 
+  .nav-item {
+    margin: 5px 0;
+  }
 }
 </style>

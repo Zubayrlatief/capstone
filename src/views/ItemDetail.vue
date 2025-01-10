@@ -59,4 +59,6 @@ export default {
   max-height: 400px;
   object-fit: contain;
 }
+
+
 </style>

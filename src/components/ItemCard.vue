@@ -3,8 +3,8 @@
     <img :src="item.prodURL" alt="Item Image" />
     <h2>{{ item.prodName }}</h2>
     <p>{{ formatAmount(item.amount) }}</p>
-    <button @click.stop="addToCart(item)">Add to Cart</button>
-    <button @click="viewItemDetails(item.prodID)">View Item</button>
+    <button id="bottone1" @click.stop="addToCart(item)"><h6>add to Cart</h6> </button>
+    <button  id="bottone1"  @click="viewItemDetails(item.prodID)"><h6>View Item</h6></button>
   </div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
 .item-card {
   border: 1px solid #631a1a;
   background-color: black;
-  padding: 16px;
+  padding: 50px;
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
@@ -53,4 +53,29 @@ export default {
 .item-card button {
   margin-top: 10px;
 }
+
+/* button styling */
+#bottone1 {
+  padding-top: 10px;
+ padding-left: 30px;
+ padding-right: 33px;
+ padding-bottom: 10px;
+ border-radius: 6px;
+ background: #fffbfb;
+ border: none;
+ font-family: inherit;
+ text-align: center;
+ cursor: pointer;
+ transition: 0.4s;
+}
+
+#bottone1:hover {
+ box-shadow: 7px 5px 56px -14px #bfbfbc;
+}
+
+#bottone1:active {
+ transform: scale(0.97);
+ box-shadow: 7px 5px 56px -10px #ffffff;
+}
+
 </style>

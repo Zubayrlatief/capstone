@@ -1,14 +1,28 @@
 <template>
-  <NavBar/>
+  <NavBar />
   <div class="container">
     <img
       src="https://zubayrlatief.github.io/capestone-hosted-images/landingpic.png"
       class="rounded"
       alt="..."
     />
-    <div class="text-container">
-      <h1 class="heading">HERMESS FITNESS</h1>
-      <h4 class="heading">The legacy will last forever</h4>
+    <div class="text">
+      <div id="p" class="a01">DIST</div>
+      <div id="p" class="a02">OR</div>
+      <div id="p" class="a03">TED</div>
+      <div id="p" class="a04">REAL</div>
+      <div id="p" class="a05">ITY</div>
+      <div id="p" class="a06">--------------------</div>
+
+      <div id="p" class="a01 s1">OUR</div>
+      <div id="p" class="a02 s1">LEG</div>
+      <div id="p" class="a03 s1">E</div>
+      <div id="p" class="a04 s1">CY</div>
+      <div id="p" class="a05 s1">CONT</div>
+      <div id="p" class="a06 s1">INUES</div>
+      <a href="/items">
+        <button id="bottone1"><strong>Our latest drop</strong></button>
+      </a>
     </div>
     <img
       src="https://zubayrlatief.github.io/capestone-hosted-images/landing%20pic%202.png"
@@ -16,23 +30,25 @@
       alt=""
     />
   </div>
-  <FooterComp/>
+  <FooterComp />
 </template>
 
 <script>
-import FooterComp from '@/components/FooterComp.vue';
-import NavBar from '@/components/NavBar.vue';
+import FooterComp from "@/components/FooterComp.vue";
+import NavBar from "@/components/NavBar.vue";
+
 export default {
-  name: 'LandingPage',
+  name: "LandingPage",
   components: {
     NavBar,
-    FooterComp
+    FooterComp,
   },
-}
+};
 </script>
 
 <style scoped>
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -40,15 +56,15 @@ html, body {
 }
 
 .container {
-  background-color: #361c1c; 
+  background-color: #000;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 100vh; 
-  box-sizing: border-box; 
-  text-align: center; 
+  height: 75vh;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .container img {
@@ -64,40 +80,81 @@ html, body {
   flex: 1;
 }
 
-.heading {
-  color: white;
-  margin: 0 10px;
-}
-
-@media (max-width: 1200px) {
-  .container img {
-    max-width: 25%;
-  }
-}
-
-@media (max-width: 992px) {
-  .container img {
-    max-width: 20%;
-  }
+#p {
+  text-align: center;
+  animation: gradient 2.4s infinite ease-in-out;
+  letter-spacing: 10px;
+  white-space: nowrap;
+  font-size: 20px;
+  text-indent: 10px;
+  font-family: "Pirata One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  color: #333;
+  padding: 0.2rem;
 }
 
 @media (max-width: 768px) {
-  .container img {
-    max-width: 15%;
+  /* Adjust container width and padding for a perfect fit */
+  .container{
+    padding: 0 15px; /* Adds slight padding to prevent edge overflow */
+    width: 100%;
+    box-sizing: border-box; /* Includes padding in width calculation */
   }
 
-  .heading {
-    font-size: 1.5rem;
+  /* Align elements properly within the container */
+  .row {
+    margin: 0 auto; /* Centers the row */
+    padding: 10px 0; /* Adds vertical spacing */
   }
+
+  /* Adjust column sizes for smaller screens */
+  .col-lg-4 {
+    width: 100%; /* Make each column take up full width */
+    text-align: center; /* Center align content */
+    margin-bottom: 1rem; /* Add spacing between rows */
+  }
+
+  /* Logo image adjustments */
+  .img {
+    height: 40px;
+    margin: 0 auto; /* Center the logo */
+  }
+
+  /* Social icons adjustments */
+  .gap-3 {
+    gap: 0.8rem; /* Slightly reduce gap between icons */
+  }
+
 }
 
-@media (max-width: 576px) {
-  .heading {
-    font-size: 1.2rem;
+/* Media Queries for Responsiveness */
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
   }
 
   .container img {
-    max-width: 20%;
+    max-width: 100%;
+    margin: 10px 0;
+  }
+
+  #p {
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  #bottone1 {
+    width: 90%;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .text-container {
+    text-align: center;
+    padding: 20px 0;
   }
 }
 </style>
