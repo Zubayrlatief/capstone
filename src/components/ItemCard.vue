@@ -56,6 +56,7 @@ export default {
 
 /* button styling */
 #bottone1 {
+  margin: 2%;
   padding-top: 10px;
  padding-left: 30px;
  padding-right: 33px;
