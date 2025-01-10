@@ -84,5 +84,7 @@ export default {
 };
 </script>
 <style scoped>
-
+.cart{
+  height: 65vh;
+}
 </style>
