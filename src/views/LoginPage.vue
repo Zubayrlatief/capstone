@@ -86,7 +86,7 @@ export default {
 <style scoped>
 .container {
   max-width: 500px;
-  background-color: #361c1c; 
+  background-color: black; 
   padding: 95px;
   border-radius: 8px; 
 }
@@ -100,7 +100,7 @@ h2 {
 }
 
 .form-control {
-  background-color: #4e2b2b; 
+  background-color: white; 
   color: white;
   border: 1px solid #6e4c4c; 
 }
