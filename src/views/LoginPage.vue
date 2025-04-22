@@ -57,28 +57,36 @@ export default {
   },
   methods: {
     async loginUser() {
-  try {
-    const response = await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
-      emailAdd: this.email,
-      userPass: this.password,
-    });
+      try {
+        const response = await axios.post('https://capstone-2-p8rd.onrender.com/users/login', {
+          emailAdd: this.email,
+          userPass: this.password,
+        });
 
-    const token = response.data.token;
-    localStorage.setItem('token', token);
-    this.$store.commit('setToken', token);
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        this.$store.commit('setToken', token);
+        
+        // Set the token in axios defaults for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-    // FETCH INFO AFTER LOGIN
-    await this.$store.dispatch('fetchUser');
+        // FETCH USER INFO AFTER LOGIN
+        await this.$store.dispatch('fetchUser');
+        
+        // Verify user data was loaded
+        if (!this.$store.state.user || !this.$store.state.user.userID) {
+          throw new Error('Failed to load user data');
+        }
 
-    this.message = 'Login successful!';
-    this.success = true;
-    this.$router.push('/items');
-  } catch (error) {
-    this.message = 'Login failed: ' + (error.response?.data || error.message);
-    this.success = false;
-  }
-}
-
+        this.message = 'Login successful!';
+        this.success = true;
+        this.$router.push('/items');
+      } catch (error) {
+        console.error('Login error:', error);
+        this.message = 'Login failed: ' + (error.response?.data || error.message);
+        this.success = false;
+      }
+    }
   },
 };
 </script>

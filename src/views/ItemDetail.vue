@@ -5,7 +5,7 @@
       <h1 v-if="item">{{ item.prodName }}</h1>
       <img v-if="item" :src="item.prodURL" alt="Product Image" />
       <p v-if="item">{{ item.description }}</p>
-      <p v-if="item">Price: {{ item.amount }}</p>
+      <p v-if="item">Price: R{{ item.amount }}</p>
       <div v-else>
         <p>Loading item details...</p>
       </div>
